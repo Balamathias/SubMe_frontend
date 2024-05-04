@@ -52,6 +52,26 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        brand: {
+          DEFAULT: '#5e60ce',
+          light: '#7d7fff',
+          dark: '#4b4da6',
+        },
+        shades: {
+          100: 'lighten(var(--background), 5%)',
+          200: 'lighten(var(--background), 10%)',
+          300: 'lighten(var(--background), 15%)',
+          400: 'lighten(var(--background), 20%)',
+          500: 'lighten(var(--background), 25%)',
+          600: 'lighten(var(--background), 30%)',
+          700: 'lighten(var(--background), 35%)',
+          800: 'lighten(var(--background), 40%)',
+          900: 'lighten(var(--background), 45%)',
+        },
+        emphasis: {
+          DEFAULT: '#701a75',
+          secondary: '#a21caf',
+        }
       },
       borderRadius: {
         lg: "var(--radius)",
