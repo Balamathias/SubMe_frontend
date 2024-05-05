@@ -14,7 +14,7 @@ const WelcomeBox = ({ user, type = 'basic' }: { user: Tables<'users'>, type?: 'b
             {/** TODO: Check email verification status and warn. */}
             <p className="text-sm tracking-tighter">Your account has been verified successfully. Start transacting.</p>
 
-            <Button className='w-full bg-lime-600 mt-2 font-semibold'>Fund Wallet</Button>
+            <Button className='w-full bg-green-600 mt-2 font-semibold'>Fund Wallet</Button>
         </div>
         <div className="flex-1 hidden md:flex">
             <Image 

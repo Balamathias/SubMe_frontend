@@ -1,11 +1,13 @@
 import { getCurrentUser } from '@/lib/supabase/user.actions'
+import { createClient } from '@/utils/supabase/server'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import React, { ReactNode } from 'react'
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
-  const { data: { user }} = await getCurrentUser()
-  if (user) return redirect('/dashboard')
+  const supabase = createClient()
+  const {data} = await supabase.auth.getSession()
+  if (data?.session) return redirect('/dashboard')
   return (
     <main className="flex justify-between">
         <div className="flex-1">

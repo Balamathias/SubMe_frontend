@@ -37,9 +37,9 @@ const SidebarComponent = () => {
 
         <footer className="p-2 lg:p-2.5 flex gap-3 flex-col">
             <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-1 5">
+                <div className="flex items-center gap-1.5 max-lg:flex-col max-md:justify-center">
                     <Avatar name={user?.currentAccountUser?.first_name || ''} />
-                    <div className="flex flex-col gap-0.5">
+                    <div className="flex flex-col gap-0.5 max-lg:items-center max-lg:justify-center">
                         <h3 className='text-primary text-sm py-0 font-semibold truncate'>{user?.currentAccountUser?.username || ''}</h3>
                         <p className='text-muted-foreground text-xs truncate'>{user?.currentAccountUser?.email}</p>
                     </div>

@@ -1,13 +1,18 @@
 import WidthWrapper from '@/components/WidthWrapper'
+import Analytics, { AnalyticsSkeleton } from '@/components/dashboard/Analytics'
 import RightSidebar from '@/components/dashboard/RightSidebar'
 import WelcomeBox from '@/components/dashboard/WelcomeBox'
 import { getUser } from '@/lib/supabase/accounts'
 import { getCurrentUser } from '@/lib/supabase/user.actions'
+import { getWallet } from '@/lib/supabase/wallets'
 import { redirect } from 'next/navigation'
-import React from 'react'
+import React, { Suspense } from 'react'
 
-const DahboardPage = async () => {
-  const [{ data: { user } }, { data: accountUser }] = await Promise.all([getCurrentUser(), getUser()])
+const DashboardPage = async () => {
+  const [
+    { data: { user } }, 
+    { data: accountUser },
+  ] = await Promise.all([getCurrentUser(), getUser(), getWallet()])
   if (!user?.id) return redirect('/sign-in')
 
   return (
@@ -16,10 +21,13 @@ const DahboardPage = async () => {
         <div className="flex items-center gap-4 flex-wrap">
           <WelcomeBox user={accountUser!} />
         </div>
+        <Suspense fallback={<AnalyticsSkeleton />}>
+          <Analytics />
+        </Suspense>
       </WidthWrapper>
       <RightSidebar user={accountUser!} />
     </div>
   )
 }
 
-export default DahboardPage
+export default DashboardPage

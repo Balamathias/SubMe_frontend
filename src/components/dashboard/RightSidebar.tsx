@@ -1,7 +1,8 @@
 import { Tables } from '@/database.types'
 import React from 'react'
 import { Input } from '../ui/input'
-import { SearchIcon } from 'lucide-react'
+import { SearchIcon, Share2Icon } from 'lucide-react'
+import { Button } from '../ui/button'
 
 const RightSidebar = ({ user }: { user: Tables<'users'>}) => {
   return (
@@ -12,6 +13,13 @@ const RightSidebar = ({ user }: { user: Tables<'users'>}) => {
                 <SearchIcon className='text-muted-foreground h-full mr-1.5' size={15}/>
             </div>
         </div>
+
+        <footer className="flex flex-col gap-3 py-4">
+          <Button className='bg-gradient from-yellow-400 to bg-yellow-600 text-white flex items-center'>
+            <Share2Icon size={15} className='mr-2'/>
+            Invite & Earn
+          </Button>
+        </footer>
     </div>
   )
 }

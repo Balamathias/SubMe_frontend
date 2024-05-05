@@ -1,107 +1,75 @@
-'use client'
+"use client"
+
+import React from 'react'
+import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { ChangeEvent, useState } from "react"
-import { toast } from "sonner"
-
+  Form
+} from "@/components/ui/form"
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { AuthSchema } from '@/utils/schema/userSchema'
+import InputField from './InputField'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 import { signUp } from '@/lib/supabase/user.actions'
+import Link from 'next/link'
+import { Card } from '../ui/card'
 
-export default function SignUpComponent() {
+const SignInComponent = () => {
+    const [isPending, setIsPending] = React.useState(false)
     const router = useRouter()
-    const [isPending, setIsPending] = useState(false)
-    const [fields, setFields] = useState({
-        username: '',
-        email: '',
-        password: '',
-    })
-
-    const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
-        e.preventDefault()
+    const form = useForm<z.infer<typeof AuthSchema>>({
+        resolver: zodResolver(AuthSchema),
+        defaultValues: {
+          email: "",
+          password: "",
+          confirm_password: ""
+        },
+      })
+  
+      async function onSubmit(values: z.infer<typeof AuthSchema>) {
+        if (values.password !== values.confirm_password) {
+            form.setError('confirm_password', { message: 'Passwords do not match' })
+            return
+        }
         setIsPending(true)
         try {
-            const {message, status} = await signUp({
-                email: fields.email,
-                password: fields.password
+            const {status} = await signUp({
+                email: values.email!,
+                password: values.password!
             })
-
-            if (status === 200) 
-                toast.success(message, {
-                description: 'A verification email has been sent to your email address. Please verify your email to complete the sign up process.',
-                style: {
-                    border: '1px solid #4BB543',
-                    backgroundColor: 'lightred',
-                }
-            })
-            return router.replace('/auth/verification-email-sent')
-        } catch (error: any) {
+            if (status === 200)
+              toast.success('Success!', { description: 'Signed In successfully, You will be redirected in a bit...' })
+            router.push('/dashboard')
+            return
+        }
+        catch (error: any) {
             console.error(error)
             setIsPending(false)
-            toast.error('An error occured.', {description: error?.message})
-        } finally {
-            setIsPending(false)
+            return toast.error('Error!', { description: error?.message })
         }
-        isPending ? toast.loading('Processing...', {description: 'Please wait while we sign you up.'}): null
-    }
+        finally { setIsPending(false) }
+      }
 
-  return (
-    <form onSubmit={handleSubmit}>
-        <Card className="w-full max-w-sm shadow-none rounded-lg py-5 border-none">
-            <CardHeader>
-                <CardTitle className="text-2xl py-1">Sign up</CardTitle>
-                <CardDescription>
-                Enter your personal details below to create your account.
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-                <div className="grid gap-2">
-                <Label htmlFor="email">Username</Label>
-                <Input 
-                    id="username" 
-                    type="text"
-                    placeholder="matiecodes"
-                    onChange={(e) => setFields({ ...fields, username: e.target.value }) }
-                    required 
-                />
-                </div>
-                <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input 
-                    id="email" 
-                    type="email" 
-                    placeholder="m@example.com" 
-                    onChange={(e) => setFields({ ...fields, email: e.target.value }) }
-                    required 
-                />
-                </div>
-                <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input 
-                    id="password" 
-                    type="password" 
-                    onChange={(e) => setFields({ ...fields, password: e.target.value }) }
-                    required 
-                />
-                </div>
-            </CardContent>
-            <CardFooter className="flex flex-col gap-2 w-full">
-                <Button className="w-full" disabled={isPending}>{isPending ? 'Processing...': 'Sign up'}</Button>
+    return (
+        <Form {...form}>
+          <Card className='flex flex-col gap-2 shadow-none border-none w-full max-w-[450px]'>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
-                <p className="text-sm text-muted-foreground py-2">Already have an account?{' '} <Link href="/sign-in" className="underline text-primary ">Sign in</Link>
-                </p>
-            </CardFooter>
-        </Card>
-    </form>
-  )
+              <InputField name="email" label="Email" placeholder='youremail@example.com' control={form.control} />
+              <InputField name="password" label="Password" control={form.control} placeholder='password...' />
+              <InputField name="confirm_password" label="Confirm Password" control={form.control} placeholder='Confrim password...' />
+
+              <Button type="submit" disabled={isPending} className='mt-2 w-full'>{isPending ? 'Processing...' : 'Sign up'}</Button>
+            </form>
+            <div className="flex flex-col space-y-1">
+              <p className='text-muted-foreground'>Already have an account? <Link href="/sign-up" className="underline text-brand">Sign In</Link></p>
+            </div>
+          </Card>
+        </Form>
+      )
 }
+
+export default SignInComponent

@@ -1,94 +1,70 @@
-'use client'
+"use client"
+
+import React from 'react'
+import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { signIn } from "@/lib/supabase/user.actions"
-import { PostgrestError } from "@supabase/supabase-js"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { ChangeEvent, useState } from "react"
-import { toast } from "sonner"
+  Form
+} from "@/components/ui/form"
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { AuthSchema } from '@/utils/schema/userSchema'
+import InputField from './InputField'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import { signIn } from '@/lib/supabase/user.actions'
+import Link from 'next/link'
+import { Card } from '../ui/card'
 
-export default function SignInComponent() {
-  const [isPending, setIsPending] = useState(false)
-  const [fields, setFields] = useState({
-    email: '',
-    password: '',
-  })
-
-  const router = useRouter()
-
-  const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsPending(true)
-    try {
-      const {message, status} = await signIn({
-        email: fields.email,
-        password: fields.password,
+const SignInComponent = () => {
+    const [isPending, setIsPending] = React.useState(false)
+    const router = useRouter()
+    const form = useForm<z.infer<typeof AuthSchema>>({
+        resolver: zodResolver(AuthSchema),
+        defaultValues: {
+          email: "",
+          password: ""
+        },
       })
-
-      if (status === 200) {
-        toast.success('Success', {description: 'Signed In successfully, You will be redirected in a bit.'})
-        router.push('/dashboard')
+  
+      async function onSubmit(values: z.infer<typeof AuthSchema>) {
+        setIsPending(true)
+        try {
+            const {status} = await signIn({
+                email: values.email!,
+                password: values.password!
+            })
+            if (status === 200)
+              toast.success('Success!', { description: 'Signed In successfully, You will be redirected in a bit...' })
+            router.push('/dashboard')
+            return
+        }
+        catch (error: any) {
+            console.error(error)
+            setIsPending(false)
+            return toast.error('Error!', { description: error?.message })
+        }
+        finally { setIsPending(false) }
       }
 
-    } catch (error: PostgrestError | Error | any) {
-      console.error(error)
-      setIsPending(false)
-      toast.error('An error occured.', {description: error?.message})
-    } finally {
-      setIsPending(false)
-    }
-  }
-  
-  return (
-    <form onSubmit={handleSubmit}>
-      <Card className="w-full max-w-sm border-none shadow-none">
-        <CardHeader>
-          <CardTitle className="text-2xl py-1 text-primary">Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4">
-        <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input 
-              id="email" 
-              type="email" 
-              placeholder="m@example.com" 
-              onChange={(e) => setFields({ ...fields, email: e.target.value }) }
-              required 
-          />
-          </div>
-          <div className="grid gap-2">
-          <Label htmlFor="password">Password</Label>
-          <Input 
-              id="password" 
-              type="password" 
-              onChange={(e) => setFields({ ...fields, password: e.target.value }) }
-              required 
-          />
-        </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-2">
-          <Button className="w-full" disabled={isPending}>{isPending ? 'Processing...' : 'Sign in'}</Button>
-          <p className="text-sm text-muted-foreground py-2 w-full">Don&#39;t have an account?{' '} <Link href="/sign-up" className="underline text-primary ">Sign up</Link>
-          </p>
+    return (
+        <Form {...form}>
+          <Card className='flex flex-col gap-2 shadow-none border-none w-full max-w-[450px]'>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 flex flex-1 flex-col">
 
-          <p className="text-sm text-muted-foreground py-2 w-full">Forgotten password?{' '} <Link href="/auth/forgot-password" className="underline text-primary ">Reset Password</Link>
-          </p>
-        </CardFooter>
-      </Card>
-    </form>
-  )
+              <InputField name="email" label="Email" placeholder='youremail@example.com' control={form.control} />
+              <InputField name="password" label="Password" control={form.control} placeholder='password...' />
+
+              <Button type="submit" disabled={isPending} className='mt-2 w-full'>{isPending ? 'Processing...' : 'Sign In'}</Button>
+            </form>
+            <div className="flex flex-col space-y-1">
+              <p className='text-muted-foreground'>{"Don't"} have an account? <Link href="/sign-up" className="underline text-brand">Sign up</Link></p>
+              <p className='text-muted-foreground'>Forgot password? <Link href="/auth/forgot-password" className="underline text-brand">Reset password</Link></p>
+            </div>
+          </Card>
+        </Form>
+      )
 }
+
+export default SignInComponent

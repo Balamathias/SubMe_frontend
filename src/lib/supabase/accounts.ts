@@ -4,6 +4,7 @@ import { Tables } from "@/database.types";
 import { createClient } from "@/utils/supabase/server";
 import { nanoid } from "nanoid";
 import { getCurrentUser } from "./user.actions";
+import { upsertWallet } from "./wallets";
 
 const supabase = createClient()
 
@@ -32,6 +33,14 @@ export const upsertUser = async ({id, ...rest}: Pick<Tables<'users'>, 'address' 
         unique_code: nanoid(10),
         ...rest,
     })
+
+    const { error: walletError } = await upsertWallet({
+        user: id,
+        balance: 0,
+    })
+
+    if (walletError) throw walletError
+
     if (error) throw error
     return { data, error }
 }
