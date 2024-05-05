@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { signIn } from "@/lib/supabase/user.actions"
+import { PostgrestError } from "@supabase/supabase-js"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ChangeEvent, useState } from "react"
@@ -27,42 +29,30 @@ export default function SignInComponent() {
 
   const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsPending(true)
     try {
-      setIsPending(true)
-      const response = await fetch(process.env.NEXT_PUBLIC_URL + '/api/auth/sign-in', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(fields),
+      const {message, status} = await signIn({
+        email: fields.email,
+        password: fields.password,
       })
-      
-      if (response.ok) {
-        if (response?.status === 200) {
-          toast.success('Login successful', {description: 'You have successfully logged in.'})
-          router.replace('/')
-          return
-        }
-        toast.error('An error occured.', {description: 'An error occured while trying to login.'})
-      } else {
-        toast.error('An error occured.', {description: 'An error occured while trying to login.'})
+
+      if (status === 200) {
+        toast.success('Success', {description: 'Signed In successfully, You will be redirected in a bit.'})
+        router.push('/dashboard')
       }
-      
-    } catch (error) {
+
+    } catch (error: PostgrestError | Error | any) {
       console.error(error)
       setIsPending(false)
-      toast.error('An error occured.', {description: 'An error occured while trying to login.'})
+      toast.error('An error occured.', {description: error?.message})
     } finally {
       setIsPending(false)
-    }
-    if (isPending) {
-      toast.loading('Processing...', { description: 'Please wait while we log you in.' });
     }
   }
   
   return (
     <form onSubmit={handleSubmit}>
-      <Card className="w-full max-w-sm border-none shadow-lg drop-shadow-lg">
+      <Card className="w-full max-w-sm border-none shadow-none">
         <CardHeader>
           <CardTitle className="text-2xl py-1 text-primary">Login</CardTitle>
           <CardDescription>

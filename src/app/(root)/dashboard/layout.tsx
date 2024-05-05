@@ -1,5 +1,12 @@
+import SidebarComponent from "@/components/sidebar";
+
 export default function DashboardLayout ({ children }: {children: React.ReactNode}) {
-    return <>
-    { children }
-    </>
+    return( 
+        <main className="flex h-screen w-full overflow-hidden">
+            <SidebarComponent />
+            <div className="flex flex-col gap-3 p-4 w-full">
+                { children }
+            </div>
+        </main>
+    )
 }

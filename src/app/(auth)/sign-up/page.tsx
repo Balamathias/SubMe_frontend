@@ -1,6 +1,12 @@
 import WidthWrapper from '@/components/WidthWrapper'
 import SignUpComponent from '@/components/auth/SignUpComponent'
 import React from 'react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Sign up | Create Your Account',
+  description: 'Sign up today on SubMe to get started with our intuitive VTU platform.'
+}
 
 const SignUpPage = () => {
   return (

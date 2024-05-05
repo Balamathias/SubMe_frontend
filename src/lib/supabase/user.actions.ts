@@ -14,7 +14,7 @@ export const signUp = async ({ email, password }: { email: string, password: str
     })
     if (error) throw error
     revalidatePath('/')
-    return redirect('/dashboard')
+    return { message: 'SUCCESS', status: 200 }
 }
 
 export const signIn = async ({ email, password }: { email: string, password: string }) => {
@@ -25,7 +25,7 @@ export const signIn = async ({ email, password }: { email: string, password: str
         })
         if (error) throw error
         revalidatePath('/')
-        return redirect('/dashboard')
+        return { message: 'SUCCESS', status: 200 }
 }
 
 export const signOut = async () => {
@@ -33,4 +33,13 @@ export const signOut = async () => {
     if (error) throw error
     revalidatePath('/')
     return redirect('/sign-in')
+}
+
+export const getCurrentUser = async () => {
+    const { data, error } = await supabase.auth.getUser()
+    if (error) {
+        console.error(error)
+        return { data: { user: null }}
+    }
+    return { data }
 }

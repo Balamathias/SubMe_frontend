@@ -60,4 +60,13 @@
     body {
       @apply bg-background text-foreground;
     }
+
+    .no-srollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 12px;
+      color: linear-gradient(180deg, var(--background), var(--foreground));
+    }
   }
+

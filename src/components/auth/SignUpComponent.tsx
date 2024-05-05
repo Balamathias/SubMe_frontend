@@ -16,6 +16,8 @@ import { useRouter } from "next/navigation"
 import { ChangeEvent, useState } from "react"
 import { toast } from "sonner"
 
+import { signUp } from '@/lib/supabase/user.actions'
+
 export default function SignUpComponent() {
     const router = useRouter()
     const [isPending, setIsPending] = useState(false)
@@ -29,27 +31,24 @@ export default function SignUpComponent() {
         e.preventDefault()
         setIsPending(true)
         try {
-            const response = await fetch(process.env.NEXT_PUBLIC_URL + '/api/auth/sign-up', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(fields),
+            const {message, status} = await signUp({
+                email: fields.email,
+                password: fields.password
             })
-            
-            if (response.ok) 
-                {
-                    if (response?.status === 201)
-                        toast.info('Verification email sent.', {description: 'A verification email has been sent to your email address. Please verify your email to complete the sign up process.'})
-                    return router.replace('/auth/verification-email-sent')
-                    toast.error('An error occured.', {description: 'An error occured while trying to sign up.'})
-            } else {
-                toast.error('An error occured.', {description: 'An error occured while trying to sign up.'})
-            }
-        } catch (error) {
+
+            if (status === 200) 
+                toast.success(message, {
+                description: 'A verification email has been sent to your email address. Please verify your email to complete the sign up process.',
+                style: {
+                    border: '1px solid #4BB543',
+                    backgroundColor: 'lightred',
+                }
+            })
+            return router.replace('/auth/verification-email-sent')
+        } catch (error: any) {
             console.error(error)
             setIsPending(false)
-            toast.error('An error occured.', {description: 'An error occured while trying to sign up.'})
+            toast.error('An error occured.', {description: error?.message})
         } finally {
             setIsPending(false)
         }
@@ -58,7 +57,7 @@ export default function SignUpComponent() {
 
   return (
     <form onSubmit={handleSubmit}>
-        <Card className="w-full max-w-sm shadow-lg rounded-lg py-5 drop-shadow-lg">
+        <Card className="w-full max-w-sm shadow-none rounded-lg py-5 border-none">
             <CardHeader>
                 <CardTitle className="text-2xl py-1">Sign up</CardTitle>
                 <CardDescription>

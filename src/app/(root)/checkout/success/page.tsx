@@ -18,16 +18,6 @@ const PaymentSuccessPage = ({searchParams}: {searchParams: {[key: string]: strin
                 </p>
             </div>
         </div>
-
-        {/* <footer className="p-6 flex gap-1.5 flex-col bg-secondary rounded">
-            <div className="flex gap-3">
-                <p className="text-sm text-muted-foreground">Transaction ID: <b className='text-fuchsia-500 font-semibold'>{transactionId}</b></p>
-                <p className="text-sm text-muted-foreground">Amount: <b className='text-fuchsia-500 font-semibold'>₦{amount}</b></p>
-            </div>
-            <h2 className='text-lg text-primary'>Need help?</h2>
-            <Link href="/contact" className="underline text-lime-500">Contact Support</Link>
-        </footer> */}
-            
     </WidthWrapper>
   )
 }
