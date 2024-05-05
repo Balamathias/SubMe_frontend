@@ -36,14 +36,16 @@ const SidebarComponent = () => {
         </div>
 
         <footer className="p-2 lg:p-2.5 flex gap-3 flex-col">
-            <div className="flex items-center flex-col gap-2">
-                <Avatar name={user?.email || ''} />
-                <div className="flex flex-col gap-0.5">
-                    <h3 className='text-primary text-sm py-0 font-semibold truncate'>{user?.email || ''}</h3>
-                    <p className='text-muted-foreground text-xs truncate'>{user?.email}</p>
+            <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-1 5">
+                    <Avatar name={user?.currentAccountUser?.first_name || ''} />
+                    <div className="flex flex-col gap-0.5">
+                        <h3 className='text-primary text-sm py-0 font-semibold truncate'>{user?.currentAccountUser?.username || ''}</h3>
+                        <p className='text-muted-foreground text-xs truncate'>{user?.currentAccountUser?.email}</p>
+                    </div>
                 </div>
-                <Button onClick={ async () => await signOut()} size='sm' variant='outline' className='flex items-center gap-1.5 border-none shadow-none'>
-                    Logout <ArrowRight size={16} className='text-rose-600'/>
+                <Button onClick={ async () => await signOut()} size='sm' variant='destructive' className='flex items-center gap-1.5 border-none shadow-none'>
+                    Logout <ArrowRight size={16} className='text-rose-50'/>
                 </Button>
             </div>
         </footer>

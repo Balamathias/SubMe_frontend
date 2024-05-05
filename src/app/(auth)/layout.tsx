@@ -1,7 +1,11 @@
+import { getCurrentUser } from '@/lib/supabase/user.actions'
 import Image from 'next/image'
+import { redirect } from 'next/navigation'
 import React, { ReactNode } from 'react'
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const RootLayout = async ({ children }: { children: ReactNode }) => {
+  const { data: { user }} = await getCurrentUser()
+  if (user) return redirect('/dashboard')
   return (
     <main className="flex justify-between">
         <div className="flex-1">
