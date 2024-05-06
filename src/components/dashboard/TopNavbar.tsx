@@ -8,7 +8,7 @@ import Image from 'next/image'
 
 const TopNavbar = () => {
   return (
-    <div className='md:hidden flex fixed top-0 z-20 h-12 justify-between w-full p-3'>
+    <div className='md:hidden flex fixed top-0 z-20 h-12 justify-between items-center w-full p-3'>
         <Link href='/dashboard'>
             <Image
             src='/vitals/logo-192.png'
