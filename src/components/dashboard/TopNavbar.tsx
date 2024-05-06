@@ -22,7 +22,7 @@ const TopNavbar = () => {
 
         <nav className="flex flex-col items-center justify-center">
             <Button size={'icon'} variant={'ghost'}>
-                <ArrowRightCircle size={17} className='text-rose-800 font-semibold' />
+                <ArrowRightCircle size={26} className='text-rose-800 font-semibold' />
             </Button>
         </nav>
     </div>
