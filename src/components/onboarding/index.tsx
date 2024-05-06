@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -17,8 +17,12 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { hashPin } from '@/lib/bcrypt'
 
+
 const OnboardingComponent = ({ currentUser }: {currentUser?: User | null}) => {
-    const [isPending, setIsPending] = React.useState(false)
+  useEffect(() => {
+    toast.info('Complete Your profile', {description: 'Complete your profile with authentic details so we can serve your needs better.'})
+  }, [])
+  const [isPending, setIsPending] = React.useState(false)
     const router = useRouter()
     const form = useForm<z.infer<typeof UserSchema>>({
         resolver: zodResolver(UserSchema),
@@ -33,8 +37,10 @@ const OnboardingComponent = ({ currentUser }: {currentUser?: User | null}) => {
           street: "",
           state: "",
           postal_code: "",
+          invited_by: ""
         },
       })
+
   
       async function onSubmit(values: z.infer<typeof UserSchema>) {
         const address = {
@@ -90,7 +96,10 @@ const OnboardingComponent = ({ currentUser }: {currentUser?: User | null}) => {
                 <InputField name="state" label="State" control={form.control} placeholder='FCT' />
             </div>
 
-            <InputField name="street" label="Street Address" control={form.control} placeholder='No. 1 Pst...' />
+            <div className="flex gap-2 items-center">
+                <InputField name="street" label="Street Address" control={form.control} placeholder='No. 1 Pst...' />
+                <InputField name="invited_by" label="Invitation Code (Optional)" control={form.control} placeholder='XCVYY23JJy' />
+            </div>
             <InputField name="email" disabled label="Email" control={form.control} value={currentUser?.email} />
             
             <Button type="submit" disabled={isPending} className='mt-2 w-full'>{isPending ? 'Processing...' : 'Submit'}</Button>

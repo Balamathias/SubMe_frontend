@@ -41,8 +41,8 @@ const SignInComponent = () => {
                 password: values.password!
             })
             if (status === 200)
-              toast.success('Success!', { description: 'Signed In successfully, You will be redirected in a bit...' })
-            router.push('/dashboard')
+              toast.success('Success!', { description: 'Verification Email sent to ' + values.email, duration: 5000 })
+            router.push('/auth/verification-email-sent')
             return
         }
         catch (error: any) {
@@ -64,8 +64,8 @@ const SignInComponent = () => {
 
               <Button type="submit" disabled={isPending} className='mt-2 w-full'>{isPending ? 'Processing...' : 'Sign up'}</Button>
             </form>
-            <div className="flex flex-col space-y-1">
-              <p className='text-muted-foreground'>Already have an account? <Link href="/sign-up" className="underline text-brand">Sign In</Link></p>
+            <div className="flex flex-col space-y-2 text-xs">
+              <p className='text-muted-foreground'>Already have an account? <Link href="/sign-in" className="underline text-brand">Sign In</Link></p>
             </div>
           </Card>
         </Form>

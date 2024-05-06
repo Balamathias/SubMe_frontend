@@ -18,7 +18,7 @@ const WelcomeBox = ({ user, type = 'basic' }: { user: Tables<'users'>, type?: 'b
         </div>
         <div className="flex-1 hidden md:flex">
             <Image 
-                src='/svg/awesome.svg' 
+                src='/images/welcome-2.png' 
                 width={300} 
                 height={300} 
                 quality={100} 

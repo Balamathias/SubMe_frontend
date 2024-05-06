@@ -7,6 +7,7 @@ export const UserSchema = z.object({
     first_name: z.string(),
     last_name: z.string(),
     pin: z.string().min(4).max(4),
+    invited_by: z.string().min(10, {message: "Invalid invite code"}).max(10, {message: 'Invalid invite code.'}).optional(),
     postal_code: z.string().nullable().optional(),
     city: z.string().nullable().optional(),
     state: z.string().nullable().optional(),

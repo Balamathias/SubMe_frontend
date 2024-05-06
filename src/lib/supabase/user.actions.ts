@@ -30,10 +30,15 @@ export const signIn = async ({ email, password }: { email: string, password: str
 
 export const signOut = async () => {
     const supabase = createClient()
-    const { error } = await supabase.auth.signOut()
-    if (error) throw error
-    revalidatePath('/')
-    return redirect('/sign-in')
+    const { data: { user } } = await getCurrentUser()
+    if (user) {
+        const { error } = await supabase.auth.signOut()
+        if (error) throw error
+        revalidatePath('/')
+        return redirect('/sign-in')
+    } else {
+        return redirect('/sign-in')
+    }
 }
 
 export const getCurrentUser = async () => {

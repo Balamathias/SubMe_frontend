@@ -40,7 +40,7 @@ const InputField = ({
               disabled={disabled ? disabled : false} 
               defaultValue={name === 'email' ? value : ''}
               value={field.value || ''}
-              type={name === 'password' ? 'password': 'text'}
+              type={name === 'password' || name === 'confirm_password' ? 'password': 'text'}
             />
             {
                 seePassword ? (<LucideEyeOff size={14} className='absolute right-2 top-2 cursor-pointer' onClick={() => setSeePassword(false)} />) : <LucideEye size={14} className='absolute right-2 top-2 cursor-pointer' onClick={() => setSeePassword(true)} />
