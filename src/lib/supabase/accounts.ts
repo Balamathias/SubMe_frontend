@@ -6,9 +6,10 @@ import { nanoid } from "nanoid";
 import { getCurrentUser } from "./user.actions";
 import { upsertWallet } from "./wallets";
 
-const supabase = createClient()
+// const supabase = createClient()
 
 export const getUser = async (id?: string) => {
+    const supabase = createClient()
     let ID;
     if (id) {
         ID = id
@@ -26,6 +27,7 @@ export const getUser = async (id?: string) => {
 }
 
 export const upsertUser = async ({id, ...rest}: Pick<Tables<'users'>, 'address' | 'email' | 'first_name' | 'last_name' | 'id' | 'phone' | 'pin'>) => {
+    const supabase = createClient()
     const { data, error } = await supabase.from('users').upsert({
         id,
         updated_at: new Date().toISOString(),
