@@ -3,9 +3,10 @@
 import { createClient } from "@/utils/supabase/server"
 import { getCurrentUser } from "./user.actions";
 
-const supabase = createClient()
+// const supabase = createClient()
 
 export const getWallet = async (userId?: string) => {
+    const supabase = createClient()
     let ID;
     if (userId) {
         ID = userId
@@ -29,6 +30,7 @@ export const getWallet = async (userId?: string) => {
 }
 
 export const upsertWallet = async ({id, user: userId, ...rest}: {id?: string, user?: string, balance?: number}) => {
+    const supabase = createClient()
     let ID;
     if (userId) {
         ID = userId
