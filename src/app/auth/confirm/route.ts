@@ -5,6 +5,7 @@ import { createClient } from '@/utils/supabase/server'
 
 // Creating a handler to a GET request to route /auth/confirm
 export async function GET(request: NextRequest) {
+  const supabase = createClient()
   const { searchParams } = new URL(request.url)
   const token_hash = searchParams.get('token_hash')
   const type = searchParams.get('type') as EmailOtpType | null
@@ -17,7 +18,6 @@ export async function GET(request: NextRequest) {
   redirectTo.searchParams.delete('type')
 
   if (token_hash && type) {
-    const supabase = createClient()
 
     const { error } = await supabase.auth.verifyOtp({
       type,
