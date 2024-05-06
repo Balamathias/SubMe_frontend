@@ -17,7 +17,7 @@ const ThemeToggle = () => {
     <Button 
       variant={'secondary'} 
       onClick={toggleTheme}
-      className='fixed z-10 right-10 bottom-10 h-12 w-12 hover:bg-violet-800 dark:hover:bg-slate-700 rounded-full dark:bg-secondary bg-primary drop-shadow-md shadow-md'>
+      className='fixed z-10 right-10 max-sm:hidden bottom-10 h-12 w-12 hover:bg-violet-800 dark:hover:bg-slate-700 rounded-full dark:bg-secondary bg-primary drop-shadow-md shadow-md'>
       {resolvedTheme === 'dark' ? (
         <LucideSun className='w-6 h-6 dark:text-lime-500 mx-auto text-white' />
       ) : (
