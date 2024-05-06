@@ -1,3 +1,5 @@
+'use server'
+
 import { Database } from '@/database.types'
 import { supabaseKey, supabaseURL } from '@/lib/supabase'
 import { createServerClient } from '@supabase/ssr'
