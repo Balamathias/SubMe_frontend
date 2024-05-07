@@ -1,6 +1,8 @@
 import WidthWrapper from '@/components/WidthWrapper'
 import Analytics, { AnalyticsSkeleton } from '@/components/dashboard/Analytics'
 import RightSidebar from '@/components/dashboard/RightSidebar'
+import Topup from '@/components/dashboard/Topup'
+import TopupData from '@/components/dashboard/Topup'
 import WelcomeBox from '@/components/dashboard/WelcomeBox'
 import { getUser } from '@/lib/supabase/accounts'
 import { getCurrentUser } from '@/lib/supabase/user.actions'
@@ -17,13 +19,21 @@ const DashboardPage = async () => {
 
   return (
     <div className="flex items-start w-full">
-      <WidthWrapper>
-        <div className="flex items-center gap-4 flex-wrap">
-          <WelcomeBox user={accountUser!} />
+      <WidthWrapper className="py-2 pb-6 lg:py-4 lg:pb-8">
+        <div className="flex flex-col gap-3 overflow-auto custom-scrollbar h-screen mt-3 pb-12">
+          <div className="flex items-center gap-4 flex-wrap">
+            <WelcomeBox user={accountUser!} />
+          </div>
+          <Suspense fallback={<AnalyticsSkeleton />}>
+            <Analytics />
+          </Suspense>
+          <Suspense fallback={<AnalyticsSkeleton />}>
+            <Topup type='data' key='data' />
+          </Suspense>
+          <Suspense fallback={<AnalyticsSkeleton />}>
+            <Topup type='airtime' key={'airtime'} />
+          </Suspense>
         </div>
-        <Suspense fallback={<AnalyticsSkeleton />}>
-          <Analytics />
-        </Suspense>
       </WidthWrapper>
       <RightSidebar user={accountUser!} />
     </div>
