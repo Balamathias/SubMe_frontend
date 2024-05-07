@@ -48,7 +48,7 @@ const DynamicModal = ({children, trigger, open, setOpen, dialogClassName, drawer
       <DrawerTrigger asChild>
         { trigger }
       </DrawerTrigger>
-      <DrawerContent className={clsx('flex flex-col flex-1 gap-3 border-none focus:border-none p-4', drawerClassName)}>
+      <DrawerContent className={clsx('flex flex-col flex-1 gap-3 border-none focus:border-none p-4 max-sm:pb-8', drawerClassName)}>
         <div className="flex flex-col gap-3">
             {children}
         </div>

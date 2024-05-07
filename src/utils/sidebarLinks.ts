@@ -109,25 +109,30 @@ export const mobileLinks = [
         href: '/dashboard',
         imgURL: '/images/home.png',
         title: 'Dashboard',
+        icon: LayoutDashboard,
     },
     {
         href: '/dashboard/services',
         imgURL: '/images/vehicle.png',
         title: 'Services',
+        icon: RefreshCwIcon,
     },
     // {
     //     href: '/dashboard/transactions',
     //     imgURL: '/images/transactions.png',
     //     title: 'Transactions',
+    //      icon: Coins,
     // },
     {
         href: '/dashboard/settings',
         imgURL: '/images/settings.png',
         title: 'Settings',
+        icon: Settings,
     },
     // {
     //     href: '/dashboard/help',
     //     imgURL: '/images/help.png',
     //     title: 'Help',
+    //     icon: HelpCircle,
     // },
 ]

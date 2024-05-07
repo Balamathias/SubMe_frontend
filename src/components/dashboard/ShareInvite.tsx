@@ -26,11 +26,11 @@ const ShareInvite = () => {
                 className='object-cover rounded-xl mx-auto h-16 w-16'
             />
             <p className="text-muted-foreground text-sm">Invite your friends and earn N{bonusAmt} once your friend tops up for the first time.</p>
-            <div className="flex items-center gap-2 bg-secondary rounded-md w-full h-14 px-2">
+            <div className="flex items-center gap-2 bg-secondary rounded-md w-full h-12 px-2">
                 <input 
                     disabled 
                     type="text" 
-                    className='flex-1 bg-transparent font-semibold p-2 text-xl focus:outline-none focus-visible:ring-0 focus:ring-0 text-center tracking-wider' 
+                    className='flex-1 bg-transparent font-semibold p-2 text-xl focus:outline-none focus-visible:ring-0 focus:ring-0 text-center tracking-wider max-sm:w-[200px]' 
                     value={inviteCode}
                 />
                 <Button className='rounded-r-md bg-gradient-to-tr from-yellow-400 to-yellow-600 text-white' size={'icon'}>
