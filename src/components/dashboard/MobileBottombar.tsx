@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { sidebarLinks as links } from '@/utils/sidebarLinks'
+import { mobileLinks as links } from '@/utils/sidebarLinks'
 import MobileLinkItem from './MobileLinkItem'
 
 const MobileBottombar = () => {

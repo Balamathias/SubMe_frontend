@@ -103,3 +103,31 @@ export const sidebarLinks: LinksProps[] = [
         ]
     },
 ]
+
+export const mobileLinks = [
+    {
+        href: '/dashboard',
+        imgURL: '/images/home.png',
+        title: 'Dashboard',
+    },
+    {
+        href: '/dashboard/services',
+        imgURL: '/images/vehicle.png',
+        title: 'Services',
+    },
+    // {
+    //     href: '/dashboard/transactions',
+    //     imgURL: '/images/transactions.png',
+    //     title: 'Transactions',
+    // },
+    {
+        href: '/dashboard/settings',
+        imgURL: '/images/settings.png',
+        title: 'Settings',
+    },
+    // {
+    //     href: '/dashboard/help',
+    //     imgURL: '/images/help.png',
+    //     title: 'Help',
+    // },
+]
