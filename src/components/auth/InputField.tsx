@@ -32,19 +32,21 @@ const InputField = ({
         name={name}
         render={({ field }) => (
         <FormItem>
-            <FormLabel>{label}</FormLabel>
-            <FormControl className="relative">
+            <FormLabel className="flex items-center justify-between my-1.5">
+              {label}
+              {(name === 'password' || name === 'confirm_password') &&
+                (seePassword ? (<LucideEyeOff size={14} className='cursor-pointer' onClick={() => setSeePassword(false)} />) : <LucideEye size={14} className='cursor-pointer' onClick={() => setSeePassword(true)} />)
+              }
+            </FormLabel>
+            <FormControl>
             <>
             <Input 
               placeholder={placeholder} {...field} 
               disabled={disabled ? disabled : false} 
               defaultValue={name === 'email' ? value : ''}
               value={field.value || ''}
-              type={name === 'password' || name === 'confirm_password' ? 'password': 'text'}
+              type={(name === 'password' || name === 'confirm_password') ? seePassword ? 'text' : 'password': 'text'}
             />
-            {
-                seePassword ? (<LucideEyeOff size={14} className='absolute right-2 top-2 cursor-pointer' onClick={() => setSeePassword(false)} />) : <LucideEye size={14} className='absolute right-2 top-2 cursor-pointer' onClick={() => setSeePassword(true)} />
-            }
             </>
             </FormControl>
             <FormMessage className='text-rose-600' />
