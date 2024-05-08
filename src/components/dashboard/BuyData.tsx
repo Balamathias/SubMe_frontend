@@ -1,22 +1,22 @@
 'use client'
 
 import { Tables } from '@/database.types'
-import { DataSchema } from '@/utils/schema/dataSchema'
-import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useState } from 'react'
 import { toast } from 'sonner'
-import { z } from 'zod'
-import { Form } from '../ui/form'
 import { Card } from '../ui/card'
-import DataInputField from './DataInputField'
 import { Button } from '../ui/button'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { networks } from '@/utils/networks'
 import Image from 'next/image'
+import { filterPlans } from '@/lib/n3tdata/data'
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { sendData } from '@/lib/n3tdata'
-import {nanoid} from 'nanoid'
-import { getNetworkValue } from '@/utils/getNetworkValue'
+import { nanoid } from 'nanoid'
+import { getWallet } from '@/lib/supabase/wallets'
+import { formatNigerianNaira } from '@/utils/formatCurrency'
+import ConfirmPurchase from './ConfirmPurchase'
 
 const BuyData = ({network: _network, user}: {network?: string, user: Tables<'users'>}) => {
     const searchParams = useSearchParams()
@@ -26,32 +26,72 @@ const BuyData = ({network: _network, user}: {network?: string, user: Tables<'use
     const networkObj = networks.find(n => n.value === network)
 
     const [isPending, setIsPending] = React.useState(false)
-    const form = useForm<z.infer<typeof DataSchema>>({
-        resolver: zodResolver(DataSchema),
-        defaultValues: {
-          mobileNumber: user?.phone || '',
-        },
-      })
-  
-      async function onSubmit(values: z.infer<typeof DataSchema>) {
-        setIsPending(true)
+    const [phone, setPhone] = useState(user?.phone || '')
+    const [cat, setCat] = useState<'SME' | 'CGIFT'>('SME')
+    const [plan, setPlan] = useState('')
+
+    const [confirmDetails, setConfirmDetails] = useState(false)
+    const [notFundable, setNotFundable] = useState(false)
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false)
+
+    const upperNetworkName = network?.toUpperCase()
+    const plans = filterPlans(upperNetworkName as any)
+
+    const handlePurchase = async () => {
+        const [_plan, price] = plan.split('+')
+
         try {
-            const {} = await sendData({
+            setIsPending(true)
+            const {data} = await getWallet()
+
+            if (data) {
+                const balance = parseFloat(data.balance?.toString() || '0')
+                const parsedPrice = parseFloat(price)
+                if (balance < parsedPrice) {
+                    toast.error("Insufficient Funds", {
+                        description: 'Please fund your wallet to top up.',
+                        duration: 10000,
+                        action: (
+                            <Button 
+                                className='bg-gradient-to-tr from-yellow-400 to-yellow-600'
+                                onClick={() => router.push('/dashboard/fund-wallet')}
+                            >
+                                Fund Wallet
+                            </Button>
+                        )
+                    })
+                }
+                setNotFundable(true)
+                return;
+            }
+
+            const {status} = await sendData({
                 "request-id": nanoid(16),
                 bypass: false,
-                network: parseInt(getNetworkValue(network as any)),
-                phone: values.mobileNumber,
-                data_plan: values.planType! as any
+                data_plan: parseInt(_plan),
+                network: upperNetworkName as any,
+                phone: phone
             })
-            return
-        }
-        catch (error: any) {
-            console.error(error)
+
+            if (status === 200) {
+                toast.success('Success', {description: ``})
+                router.replace(`?success=true`)
+            }
+
+        } catch (err: any) {
+            console.log(err)
+            toast.error('Error!', {description: 'An unknown error occured, please try again.', descriptionClassName: 'text-rose-500',className: 'border border-rose-600'})
             setIsPending(false)
-            return toast.error('Error!', { description: error?.message })
+        }finally {
+            setIsPending(false)
         }
-        finally { setIsPending(false) }
-      }
+    }
+
+    const handleConfirmModalOpen = async () => {
+        if (!plan || !network || !cat || !phone) return toast.error("Invalid Input", {description: "Please validate all the fields before you proceed."})
+        setConfirmModalOpen(true)
+        if (!confirmDetails) return
+    }
 
   return (
     <div className='flex flex-col gap-3 py-3'>
@@ -68,17 +108,64 @@ const BuyData = ({network: _network, user}: {network?: string, user: Tables<'use
             />
         </div>
 
-        <Form {...form}>
-            <Card className='flex flex-col gap-2 shadow-none border-none w-full max-w-[450px]'>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 flex flex-1 flex-col">
+            <Card className='flex flex-col gap-2 space-y-3 shadow-none border-none w-full max-w-[450px]'>
+                <div className="flex flex-col gap-2">
+                    <Label htmlFor='phone'>Phone Number</Label>
+                    <Input defaultValue={phone} id="phone" onChange={e => setPhone(e.target.value)} />
+                </div>
 
-                <DataInputField name="mobileNumber" label="Phone Number" defaultValue={user?.phone!} placeholder={user?.phone!} control={form.control} />
+                <div className="flex flex-col gap-2">
+                    <Label htmlFor='cat'>Type</Label>
+                    <Select defaultValue={cat} onValueChange={(e: 'SME' | 'CGIFT') => setCat(e)}>
+                        <SelectTrigger id='cat'>
+                            <SelectValue placeholder="Select Category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value='SME'>SME</SelectItem>
+                            <SelectItem value="CGIFT">CGIFT</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                <Button type="submit" disabled={isPending} className='mt-2 w-full'>{isPending ? 'Processing...' : 'Buy'}</Button>
-            </form>
+                <div className="flex flex-col gap-2">
+                    <Label htmlFor='plan'>Data Plan</Label>
+
+                    <Select defaultValue={plan}  onValueChange={e => setPlan(e)}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select Data Plan"/>
+                        </SelectTrigger>
+                        <SelectContent className="w-full">
+                            {
+                                plans
+                                .map(plan => (
+                                    <SelectItem key={plan.id} value={`${plan.id.toString()}+${plan.dataAmount}+${plan.price}`} className="w-full flex-1">
+                                        <div className="flex justify-between flex-1 items-center py-2 w-full gap-5 min-w-full">
+                                            <span>{plan.dataAmount}</span>
+                                            <b>{formatNigerianNaira(parseFloat(plan.price))}</b>
+                                        </div>
+                                    </SelectItem>
+                                ))
+                            }
+                        </SelectContent>
+                    </Select>
+                </div>
+                <Button 
+                    type="submit" 
+                    disabled={isPending}
+                    onClick={async () => await handleConfirmModalOpen()} 
+                    className='mt-2 bg-gradient-to-tr from-primary to-pink-600 hover:bg-fuchsia-700 transition-all w-full'
+                >{isPending ? 'Processing...' : 'Buy'}</Button>
             </Card>
-        </Form>
 
+            <ConfirmPurchase 
+                phone={phone} 
+                plan={plan.split('+').at(1)!} 
+                amount={plan.split('+').at(2)!}
+                network={upperNetworkName!}
+                open={confirmModalOpen} 
+                setOpen={setConfirmModalOpen} 
+                handlePurchase={handlePurchase}
+            />
     </div>
   )
 }

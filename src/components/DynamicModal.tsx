@@ -19,7 +19,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 interface DynamicModalProps {
     children: React.ReactNode,
-    trigger: React.ReactNode,
+    trigger?: React.ReactNode,
     open?: boolean,
     setOpen?: React.Dispatch<React.SetStateAction<boolean>>,
     showCloseButton?: boolean,

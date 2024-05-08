@@ -5,7 +5,7 @@ import BuyData from './BuyData'
 const DataComponent = async () => {
     const { data } = await getUser()
   return (
-    <div>
+    <div className='flex flex-col gap-3'>
         <BuyData user={data!} />
     </div>
   )

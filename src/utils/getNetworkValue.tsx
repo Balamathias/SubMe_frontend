@@ -5,6 +5,13 @@ const __object = {
     'airtel': '04'
 }
 
-export const getNetworkValue = (network: 'mtn' | 'glo' | '9mobile' | 'airtel') => {
-    return __object[network]
+const __object__string = {
+    'mtn': 'MTN',
+    'glo': 'GLO',
+    '9mobile': '9MOBILE',
+    'airtel': 'AIRTEL'
+}
+
+export const getNetworkValue = (network: 'mtn' | 'glo' | '9mobile' | 'airtel', type?: 'alpha' | 'alphanumeric') => {
+    return type === 'alpha' ? __object__string[network] : __object[network]
 }

@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 const NetworkItem = ({ network, type }: { network: typeof networks[0], type: 'airtime' | 'data' }) => {
     const router = useRouter()
     return (
-        <Card className={clsx('border-none shadow-md drop-shadow-md rounded-r-2xl bg-secondary flex flex-col items-center justify-center space-y-2.5 p-2 cursor-pointer focus:opacity-70 focus:transition-all', {
+        <Card className={clsx('border-none shadow-md drop-shadow-md rounded-r-2xl bg-secondary flex flex-col items-center justify-center space-y-2.5 p-4 cursor-pointer focus:opacity-70 focus:transition-all', {
                 [`${network.activeClassName}`]: type === 'airtime'
         })}
             onClick={() => router.push(`/dashboard/services/${type}?network=${network.value}`)}
