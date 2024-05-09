@@ -1,3 +1,5 @@
+'use server'
+
 import { Tables } from "@/database.types";
 import { getCurrentUser } from "./user.actions";
 import { createClient } from "@/utils/supabase/server";
