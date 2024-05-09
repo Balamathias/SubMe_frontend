@@ -19,7 +19,7 @@ const DashboardPage = async () => {
 
   return (
     <div className="flex items-start w-full">
-      <WidthWrapper className="py-2 pb-6 lg:py-4 lg:pb-8">
+      <WidthWrapper className="py-2 lg:py-4">
         <div className="flex flex-col gap-3 overflow-auto custom-scrollbar h-screen mt-3 pb-12">
           <div className="flex items-center gap-4 flex-wrap">
             <WelcomeBox user={accountUser!} />
