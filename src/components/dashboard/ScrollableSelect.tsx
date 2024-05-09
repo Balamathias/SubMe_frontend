@@ -34,7 +34,7 @@ export function SelectScrollable({data, label, name, control, placeholder}: Sele
             <FormItem>
             <FormLabel>{label}</FormLabel>
 
-            <Select onChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
                 <SelectTrigger className="">
                     <SelectValue placeholder={placeholder}/>
