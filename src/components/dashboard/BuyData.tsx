@@ -17,6 +17,7 @@ import { nanoid } from 'nanoid'
 import { getWallet } from '@/lib/supabase/wallets'
 import { formatNigerianNaira } from '@/utils/formatCurrency'
 import ConfirmPurchase from './ConfirmPurchase'
+import { upsertHistory } from '@/lib/supabase/history'
 
 const BuyData = ({network: _network, user}: {network?: string, user: Tables<'users'>}) => {
     const searchParams = useSearchParams()
@@ -74,9 +75,21 @@ const BuyData = ({network: _network, user}: {network?: string, user: Tables<'use
             })
 
             if (status === 200) {
-                toast.success('Success', {description: ``})
+                toast.success('Success', {description: `You bought ${_plan} data plan for ${phone} on ${upperNetworkName}`})
+
+                const {error} = await upsertHistory({
+                    description: `You bought ${_plan} data plan for ${phone} on ${upperNetworkName}`,
+                    title: 'Data Purchase',
+                    type: 'data',
+                    user: user.id,
+                })
+
+                if (error) return toast.error('Error!', {description: 'We could not save this transaction to your history. Please try again '})
+
                 router.replace(`?success=true`)
             }
+
+            return toast.success('Success')
 
         } catch (err: any) {
             console.log(err)
