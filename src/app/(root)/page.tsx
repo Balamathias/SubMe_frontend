@@ -6,8 +6,8 @@ import Link from "next/link";
 
 export default async function Home() {
   return (
-    <WidthWrapper className="min-h-screen justify-center items-center" >
-      <div className="flex flex-col gap-3 p-6 lg:px-10 lg:py-10 rounded-lg">
+    <WidthWrapper className="min-h-screen justify-center items-center bg-[url('/bg/bubbles.png')] bg-cover mx-0 max-w-full" >
+      <div className="flex flex-col gap-3 p-6 lg:px-10 lg:py-10 rounded-lg bg-background backdrop:backdrop-blur ">
         <LucideMail size={64} className="text-primary" />
 
         <h1 className="text-3xl py-2.5 text-primary">Welcome to SubME,</h1>
