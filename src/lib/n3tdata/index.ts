@@ -1,6 +1,8 @@
+'use server'
+
 import { Payload } from "./types";
 
-export const baseURL = 'https://n3tdata.com/api'
+const baseURL = 'https://n3tdata.com/api'
 
 const dataURL: string = 'https://n3tdata.com/api/data';
 
@@ -49,7 +51,8 @@ export const sendData = async (payload: Payload) => {
         const data = await res.json()
         return { data, status: res.status }
     } catch (error: any) {
-        throw new Error(error)
+        const _error = new Error(error)
+        return {data: null, status: 500, error: _error.message}
     }
 }
   

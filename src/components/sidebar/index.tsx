@@ -9,13 +9,14 @@ import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
 import { useCurrentUser } from '@/providers/user-provider'
 import { signOut } from '@/lib/supabase/user.actions'
+import Link from 'next/link'
 
 const SidebarComponent = () => {
     const user = useCurrentUser()
   return (
     <div className='h-screen md:flex flex-col p-2 lg:p-2.5 hidden w-[270px] lg:w-[300px] overflow-auto custom-scrollbar justify-between border-r-2 border-dashed'>
         <div className="flex flex-col space-y-12">
-            <div className="flex gap-1.5 p-2 items-center">
+            <Link href="/" className="flex gap-1.5 p-2 items-center">
                 <Image 
                     src='/vitals/logo-192.png' 
                     width={30} 
@@ -24,7 +25,7 @@ const SidebarComponent = () => {
                     quality={100}
                 />
                 <h2 className='text-primary font-semibold text-xl'>Subme</h2>
-            </div>
+            </Link>
 
             <nav className='flex flex-col gap-1.5 '>
                 {

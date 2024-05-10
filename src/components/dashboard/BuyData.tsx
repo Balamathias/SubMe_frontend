@@ -18,28 +18,31 @@ import { getWallet, upsertWallet } from '@/lib/supabase/wallets'
 import { formatNigerianNaira } from '@/utils/formatCurrency'
 import ConfirmPurchase from './ConfirmPurchase'
 import { upsertHistory } from '@/lib/supabase/history'
+import { useCurrentUser } from '@/providers/user-provider'
 
-const BuyData = ({network: _network, user}: {network?: string, user: Tables<'users'>}) => {
-    const searchParams = useSearchParams()
+const BuyData = ({network: _network}: {network?: string, user?: Tables<'users'>}) => {
+    const user = useCurrentUser()?.currentAccountUser
+    const searchParams = new URLSearchParams(useSearchParams().toString())
     const router = useRouter()
-    const network = searchParams.get('network')
+    const [network, setNetwork] = useState(searchParams.get('network'))
 
-    const networkObj = networks.find(n => n.value === network)
-
+    const upperNetworkName = network?.toUpperCase()
+    const plans = filterPlans(upperNetworkName as any)
+    const [networkObj, setNetworkObj] = useState(networks.find(n => n.value === network))
+    
     const [isPending, setIsPending] = React.useState(false)
     const [phone, setPhone] = useState(user?.phone || '')
     const [cat, setCat] = useState<'SME' | 'CGIFT'>('SME')
     const [plan, setPlan] = useState('')
-
+    const [imgURL, setImgURL] = useState(networkObj?.imgURL as string | undefined)
+    
     const [confirmDetails, setConfirmDetails] = useState(false)
     const [notFundable, setNotFundable] = useState(false)
     const [confirmModalOpen, setConfirmModalOpen] = useState(false)
 
-    const upperNetworkName = network?.toUpperCase()
-    const plans = filterPlans(upperNetworkName as any)
 
     const handlePurchase = async () => {
-        const [_plan, price] = plan.split('+')
+        const [_plan, dataAmount, price] = plan.split('+')
 
         try {
             setIsPending(true)
@@ -52,7 +55,7 @@ const BuyData = ({network: _network, user}: {network?: string, user: Tables<'use
                     toast.error("Insufficient Funds", {
                         description: 'Please fund your wallet to top up.',
                         duration: 10000,
-                        action: (
+                        action:  (
                             <Button 
                                 className='bg-gradient-to-tr from-yellow-400 to-yellow-600'
                                 onClick={() => router.push('/dashboard/fund-wallet')}
@@ -72,8 +75,8 @@ const BuyData = ({network: _network, user}: {network?: string, user: Tables<'use
             }
 
 
-            const {status, data: _resp} = await sendData({
-                "request-id": nanoid(16),
+            const {data: _resp} = await sendData({
+                "request-id": nanoid(16).toString(),
                 bypass: false,
                 data_plan: parseInt(_plan),
                 network: upperNetworkName as any,
@@ -86,23 +89,24 @@ const BuyData = ({network: _network, user}: {network?: string, user: Tables<'use
                     description: `You bought ${_plan} data plan for ${phone} on ${upperNetworkName}`,
                     title: 'Data Purchase',
                     type: 'data',
-                    user: user.id,
-                    meta_data: null,
+                    user: user?.id!,
+                    meta_data: JSON.stringify({}),
                 })
 
-                if (error) return toast.error('Error!', {description: 'We could not save this transaction to your history. Please try again '})
+                if (error) toast.error('Error!', {description: 'We could not save this transaction to your history. Please try again '})
 
                 // router.replace(`?success=true`)
             } else {
                 toast.info("Info", {description: 'An unknown error occured, please --try again.'})
             }
 
-            return toast.success('Success')
+             toast.success('Success')
 
         } catch (err: any) {
             console.log(err)
-            toast.error('Error!', {description: err?.message+'An unknown error occured, please try again.', descriptionClassName: 'text-rose-500',className: 'border border-rose-600'})
+            toast.error('Error!', {description: err?.message+' An unknown error occured, please try again.', descriptionClassName: 'text-rose-500',className: 'border border-rose-600'})
             setIsPending(false)
+            throw err
         }finally {
             setIsPending(false)
         }
@@ -115,37 +119,59 @@ const BuyData = ({network: _network, user}: {network?: string, user: Tables<'use
     }
 
   return (
-    <div className='flex flex-col gap-3 py-3'>
-
-        <div className="flex flex-col gap-3 py-3">
-            <h1 className='text-xl font-semibold'>Buy Data</h1>
-            <Image 
-                src={networkObj?.imgURL!} 
-                alt={networkObj?.name!} 
-                width={50} 
-                height={50} 
-                quality={100}
-                className='object-cover h-24 w-24'
-            />
-        </div>
+    <div className='flex flex-col gap-3 py-3 mb-20'>
+            <div className="flex flex-col gap-3 py-3">
+                <h1 className='text-xl font-semibold'>Buy Data</h1>
+                <Image 
+                    src={imgURL || '/glass/images/wifi.png'} 
+                    alt={networkObj?.name || 'Network'} 
+                    width={50} 
+                    height={50} 
+                    quality={100}
+                    className='object-cover h-24 w-24'
+                    key={networkObj?.imgURL || 'network-img'} 
+                />
+            </div>
 
             <Card className='flex flex-col gap-2 space-y-3 shadow-none border-none w-full max-w-[450px]'>
                 <div className="flex flex-col gap-2">
                     <Label htmlFor='phone'>Phone Number</Label>
                     <Input defaultValue={phone} id="phone" onChange={e => setPhone(e.target.value)} />
                 </div>
+                <div className="flex items-center gap-5 w-full">
+                    <div className="flex flex-col gap-2 w-full">
+                        <Label htmlFor='network'>Network</Label>
+                        <Select defaultValue={upperNetworkName || ''} onValueChange={(e) => {
+                            setNetwork(e)
+                            searchParams.set('network', e.toLowerCase())
+                            setImgURL(networks.find(n => n.value === e.toUpperCase())?.imgURL)
+                            router.push('?' + searchParams.toString())
+                            setNetworkObj(networks.find(n => n.value === e.toUpperCase()))
+                        }}>
+                            <SelectTrigger id='network'>
+                                <SelectValue placeholder="Select Network" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value='GLO'>GLO</SelectItem>
+                                <SelectItem value="MTN">MTN</SelectItem>
+                                <SelectItem value="AIRTEL">AIRTEL</SelectItem>
+                                <SelectItem value="9MOBILE">9MOBILE</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
 
-                <div className="flex flex-col gap-2">
-                    <Label htmlFor='cat'>Type</Label>
-                    <Select defaultValue={cat} onValueChange={(e: 'SME' | 'CGIFT') => setCat(e)}>
-                        <SelectTrigger id='cat'>
-                            <SelectValue placeholder="Select Category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value='SME'>SME</SelectItem>
-                            <SelectItem value="CGIFT">CGIFT</SelectItem>
-                        </SelectContent>
-                    </Select>
+                    <div className="flex flex-col gap-2 w-full">
+                        <Label htmlFor='cat'>Type</Label>
+                        <Select defaultValue={cat} onValueChange={(e: 'SME' | 'CGIFT') => setCat(e)}>
+                            <SelectTrigger id='cat'>
+                                <SelectValue placeholder="Select Category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value='SME'>SME</SelectItem>
+                                <SelectItem value="CGIFT">CGIFT</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -155,14 +181,15 @@ const BuyData = ({network: _network, user}: {network?: string, user: Tables<'use
                         <SelectTrigger>
                             <SelectValue placeholder="Select Data Plan"/>
                         </SelectTrigger>
-                        <SelectContent className="w-full">
+                        <SelectContent className="w-full flex flex-1">
                             {
                                 plans
                                 .map(plan => (
-                                    <SelectItem key={plan.id} value={`${plan.id.toString()}+${plan.dataAmount}+${plan.price}`} className="w-full flex-1">
-                                        <div className="flex justify-between flex-1 items-center py-2 w-full gap-5 min-w-full">
-                                            <span>{plan.dataAmount}</span>
-                                            <b>{formatNigerianNaira(parseFloat(plan.price))}</b>
+                                    <SelectItem key={plan.id} value={`${plan.id.toString()}+${plan.dataAmount}+${plan.price}`} className="w-full flex-1 min-w-max">
+                                        <div className="flex justify-between flex-1 items-center py-2 !w-full gap-5 max-xs:min-w-[250px] md:min-w-[500px]">
+                                            <span className='flex-1 mr-auto'>{plan.dataAmount}</span>
+                                            <b className="flex-1 mx-auto">{formatNigerianNaira(parseFloat(plan.price))}</b>
+                                            <span className="flex-1 ml-auto whitespace-nowrap">{plan.duration}</span>
                                         </div>
                                     </SelectItem>
                                 ))

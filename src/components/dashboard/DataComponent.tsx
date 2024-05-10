@@ -1,12 +1,12 @@
-import { getUser } from '@/lib/supabase/accounts'
+'use client'
+
 import React from 'react'
 import BuyData from './BuyData'
 
-const DataComponent = async () => {
-    const { data } = await getUser()
+const DataComponent = () => {
   return (
     <div className='flex flex-col gap-3'>
-        <BuyData user={data!} />
+        <BuyData />
     </div>
   )
 }

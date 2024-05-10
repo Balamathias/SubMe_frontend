@@ -14,7 +14,7 @@ export const getWallet = async (userId?: string) => {
         const { data: { user } } = await getCurrentUser()
         ID = user?.id
     }
-    if (!ID) return { data: null, error: new Error('User not found') }
+    if (!ID) return { data: null, error: null }
 
     const { data, error } = await supabase.from('wallets').select('*').eq('user', ID).single()
 
@@ -54,5 +54,6 @@ export const upsertWallet = async ({id, user: userId, ...rest}: {id?: string, us
     })
 
     if (error) throw error
+
     return { data, error }
 }

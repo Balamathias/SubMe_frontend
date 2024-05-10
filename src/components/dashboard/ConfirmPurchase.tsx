@@ -29,9 +29,9 @@ const ConfirmPurchase = ({plan, phone, open, setOpen, handlePurchase, amount, ne
                 <p>Amount: {formatNigerianNaira(parseFloat(amount))}</p>
                 <p>Network: {network}</p>
             </div>
-            <Button className='bg-pink-600 w-full' onClick={ async () => {
+            <Button className='bg-pink-600 w-full' onClick={ () => {
                 setOpen(false)
-                return await handlePurchase()
+                handlePurchase()
             }}>Proceed</Button>
         </DynamicModal>
     </div>

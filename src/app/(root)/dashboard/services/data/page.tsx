@@ -1,7 +1,7 @@
 import WidthWrapper from '@/components/WidthWrapper'
 import { BreadcrumbComponent } from '@/components/dashboard/BreadCrumbComponent'
 import DataComponent from '@/components/dashboard/DataComponent'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 const DataServicesPage = ({ searchParams }: { searchParams: {[key: string]: string}}) => {
   const urlParams = new URLSearchParams(searchParams)
@@ -17,7 +17,9 @@ const DataServicesPage = ({ searchParams }: { searchParams: {[key: string]: stri
         />
 
         <div className='flex flex-col'>
-          <DataComponent />
+          <Suspense fallback={<div>Loading...</div>}>
+            <DataComponent />
+          </Suspense>
         </div>
     </WidthWrapper>
   )
