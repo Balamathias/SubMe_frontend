@@ -13,7 +13,7 @@ const DashboardSearch = ({}) => {
   return (
     <div className="flex flex-col space-y-2 overflow-auto">
         <div className="h-10 w-full bg-secondary rounded-lg flex items-center">
-            <Input placeholder='Search...' onBlurCapture={() => setFocused(false)} onChange={e => setQuery(e.target.value)} onFocus={() => setFocused(true)} className='border-none focus:border-none active:border-none h-full w-full focus-visible:ring-0' />
+            <Input placeholder='Search...' autoFocus={false} onBlur={() => setFocused(false)} onChange={e => setQuery(e.target.value)} onFocus={() => setFocused(true)} className='border-none focus:border-none active:border-none h-full w-full focus-visible:ring-0' />
             <SearchIcon className='text-muted-foreground h-full mr-1.5' size={15}/>
         </div>
 

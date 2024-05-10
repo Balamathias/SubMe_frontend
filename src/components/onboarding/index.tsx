@@ -98,7 +98,7 @@ const OnboardingComponent = ({ currentUser }: {currentUser?: User | null}) => {
 
             <div className="flex gap-2 items-center">
                 <InputField name="street" label="Street Address" control={form.control} placeholder='No. 1 Pst...' />
-                <InputField name="invited_by" label="Invitation Code (Optional)" control={form.control} placeholder='XCVYY23JJy' />
+                <InputField name="invited_by" label="Invite Code (Optional)" control={form.control} placeholder='XCVYY23JJy' />
             </div>
             <InputField name="email" disabled label="Email" control={form.control} value={currentUser?.email} />
             

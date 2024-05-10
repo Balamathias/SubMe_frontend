@@ -1,5 +1,6 @@
 import WidthWrapper from '@/components/WidthWrapper'
 import Analytics, { AnalyticsSkeleton } from '@/components/dashboard/Analytics'
+import DashboardRightSidebar from '@/components/dashboard/DashboardRightSidebar'
 import RightSidebar from '@/components/dashboard/RightSidebar'
 import Topup from '@/components/dashboard/Topup'
 import TopupData from '@/components/dashboard/Topup'
@@ -19,8 +20,8 @@ const DashboardPage = async () => {
 
   return (
     <div className="flex items-start w-full">
-      <WidthWrapper className="py-2 lg:py-4">
-        <div className="flex flex-col gap-3 overflow-auto custom-scrollbar h-screen mt-3 pb-12">
+      <WidthWrapper className="py-2 lg:py-4 h-screen custom-scrollbar">
+        <div className="flex flex-col gap-3 overflow-auto custom-scrollbar pb-20">
           <div className="flex items-center gap-4 flex-wrap">
             <WelcomeBox user={accountUser!} />
           </div>
@@ -35,7 +36,7 @@ const DashboardPage = async () => {
           </Suspense>
         </div>
       </WidthWrapper>
-      <RightSidebar user={accountUser!} />
+      <DashboardRightSidebar user={accountUser!} />
     </div>
   )
 }

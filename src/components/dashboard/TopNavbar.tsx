@@ -10,7 +10,7 @@ import { getUser } from '@/lib/supabase/accounts'
 const TopNavbar = async () => {
   const { data: accountUser } = await getUser()
   return (
-    <div className='md:hidden flex fixed top-0 z-20 h-14 justify-between items-center w-full p-3 bg-background'>
+    <div className='flex  top-0 z-20 h-14 justify-between items-center w-full p-3 md:px-5 backdrop-blur bg-transparent'>
         <Link href='/dashboard' className='flex gap-1 items-center'>
             <Image
             src='/vitals/logo-192.png'
@@ -20,10 +20,10 @@ const TopNavbar = async () => {
             quality={100}
             className="h-8 w-8 ml-4 object-contain"
             />
-            <p className="text-primary font-semibold">SubMe</p>
+            <p className="text-primary font-semibold md:hidden">SubMe</p>
         </Link>
 
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-end">
             <DynamicSheet
               trigger={
                 <Button size={'icon'} variant={'ghost'}>

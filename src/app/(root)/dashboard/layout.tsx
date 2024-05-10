@@ -9,9 +9,9 @@ export default async function DashboardLayout ({ children }: {children: React.Re
     if (!accountData?.onboarded) return redirect('/onboarding')
     return( 
         <main className="flex h-screen w-full overflow-hidden relative">
-            <TopNavbar />
             <SidebarComponent />
-            <div className="flex flex-col gap-3 p-4 w-full max-md:mt-8">
+            <div className="flex flex-col w-full">
+                <TopNavbar />
                 { children }
             </div>
             <MobileBottombar />

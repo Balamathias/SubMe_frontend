@@ -14,7 +14,7 @@ import { Label } from '../ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { sendData } from '@/lib/n3tdata'
 import { nanoid } from 'nanoid'
-import { getWallet } from '@/lib/supabase/wallets'
+import { getWallet, upsertWallet } from '@/lib/supabase/wallets'
 import { formatNigerianNaira } from '@/utils/formatCurrency'
 import ConfirmPurchase from './ConfirmPurchase'
 import { upsertHistory } from '@/lib/supabase/history'
@@ -61,12 +61,18 @@ const BuyData = ({network: _network, user}: {network?: string, user: Tables<'use
                             </Button>
                         )
                     })
+                    setNotFundable(true)
+                    return
                 }
-                setNotFundable(true)
-                return;
+
+                const {} = await upsertWallet({
+                    id: data?.id,
+                    balance: parseFloat(data?.balance?.toString() || '0') - parseFloat(price),
+                })
             }
 
-            const {status} = await sendData({
+
+            const {status, data: _resp} = await sendData({
                 "request-id": nanoid(16),
                 bypass: false,
                 data_plan: parseInt(_plan),
@@ -74,26 +80,28 @@ const BuyData = ({network: _network, user}: {network?: string, user: Tables<'use
                 phone: phone
             })
 
-            if (status === 200) {
+            if (_resp) {
                 toast.success('Success', {description: `You bought ${_plan} data plan for ${phone} on ${upperNetworkName}`})
-
                 const {error} = await upsertHistory({
                     description: `You bought ${_plan} data plan for ${phone} on ${upperNetworkName}`,
                     title: 'Data Purchase',
                     type: 'data',
                     user: user.id,
+                    meta_data: null,
                 })
 
                 if (error) return toast.error('Error!', {description: 'We could not save this transaction to your history. Please try again '})
 
-                router.replace(`?success=true`)
+                // router.replace(`?success=true`)
+            } else {
+                toast.info("Info", {description: 'An unknown error occured, please --try again.'})
             }
 
             return toast.success('Success')
 
         } catch (err: any) {
             console.log(err)
-            toast.error('Error!', {description: 'An unknown error occured, please try again.', descriptionClassName: 'text-rose-500',className: 'border border-rose-600'})
+            toast.error('Error!', {description: err?.message+'An unknown error occured, please try again.', descriptionClassName: 'text-rose-500',className: 'border border-rose-600'})
             setIsPending(false)
         }finally {
             setIsPending(false)
