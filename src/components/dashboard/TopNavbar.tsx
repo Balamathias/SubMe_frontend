@@ -11,7 +11,8 @@ const TopNavbar = async () => {
   const { data: accountUser } = await getUser()
   return (
     <div className='flex  top-0 z-20 h-14 justify-between items-center w-full p-3 md:px-5 backdrop-blur bg-transparent'>
-        <Link href='/dashboard' className='flex gap-1 items-center'>
+        <div className='hidden md:block'/>
+        <Link href='/dashboard' className='flex gap-1 items-center md:hidden'>
             <Image
             src='/vitals/logo-192.png'
             alt='Logo'
@@ -23,11 +24,11 @@ const TopNavbar = async () => {
             <p className="text-primary font-semibold md:hidden">SubMe</p>
         </Link>
 
-        <div className="flex flex-col items-center justify-end">
+        <div className="flex flex-col items-center justify-end ml-auto">
             <DynamicSheet
               trigger={
                 <Button size={'icon'} variant={'ghost'}>
-                  <MenuIcon size={26} />
+                  <MenuIcon size={26} strokeWidth={1} className='text-muted-foreground mr-2' />
                 </Button>
               }
             >

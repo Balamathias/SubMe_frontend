@@ -33,7 +33,7 @@ export const sendData = async (payload: Payload) => {
     const token = (await getUserToken())?.data['AccessToken']
     console.log(token)
     const headers: HeadersInit = new Headers({
-        'Authorization': `Token ${process.env.NEXT_N3TDATA_API_KEY!}`,
+        'Authorization': `Token ${token}`,
         'Content-Type': 'application/json',
     });
     
@@ -48,7 +48,7 @@ export const sendData = async (payload: Payload) => {
           
           if (!res.ok) {
             console.error('Error fetching data')
-            throw Error
+            return {data: null, status: res.status, OK: false}
         }
         const data = await res.json()
         console.log(data)

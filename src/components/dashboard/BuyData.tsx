@@ -98,6 +98,11 @@ const BuyData = ({network: _network}: {network?: string, user?: Tables<'users'>}
                             amount: price
                         }),
                     })
+
+                    if (!historyRes.data) {
+                        console.error(historyRes.error)
+                        return toast.error('Error!', {description: 'We could not save this transaction. Please try again '})
+                    }
                 }
                 else {
                     const walletResponse = await updateWalletBalance(wallet?.id, balance)

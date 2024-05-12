@@ -2,6 +2,7 @@ import React from 'react'
 import { Card } from '../ui/card'
 import { networks } from '@/utils/networks'
 import NetworkItem from './NetworkItem'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 const Topup = ({type}: {type: 'airtime' | 'data'}) => {
   return (
@@ -10,13 +11,18 @@ const Topup = ({type}: {type: 'airtime' | 'data'}) => {
             {type === 'data' ? 'Buy Data' : 'Airtime Topup'}
         </h2>
 
-        <div className="flex items-center gap-5 flex-wrap">
-            {
-                networks.map(network => (
-                    <NetworkItem network={network} key={network.name} type={type}/>
-                ))
-            }
-        </div>
+        <ScrollArea className="w-96 md:min-w-min whitespace-nowrap rounded-md !flex !flex-row gap-3">
+            <div className="flex w-max space-x-4 p-4">
+                {
+                    networks.map(network => (
+                        <div key={network.name}>
+                            <NetworkItem network={network} type={type}/>
+                        </div>
+                    ))
+                }
+                <ScrollBar orientation="horizontal" />
+            </div>
+        </ScrollArea>
 
     </Card>
   )
