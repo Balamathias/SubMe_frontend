@@ -18,9 +18,9 @@ export const getWallet = async (userId?: string) => {
 
     const { data, error } = await supabase.from('wallets').select('*').eq('user', ID).single()
 
-    if (!data) {
+    if (!data?.id) {
         const {data, error} = await upsertWallet({ user: ID, balance: 0 })
-        if (error) throw error
+        if (error) return { data: null, error }
         return { data, error }
     }
 
@@ -42,8 +42,8 @@ export const upsertWallet = async ({id, user: userId, ...rest}: {id?: string, us
 
     if (id) {
         const { data, error } = await supabase.from('wallets').select('*').eq('id', id).single()
-        if (error) throw error
-        if (data) return { data, error: new Error('Wallet already exists') }
+        if (error) return { data: null, error }
+        if (data) return { data, error: {message: 'Wallet already exists'}}
     }
 
     const { data, error } = await supabase.from('wallets').upsert({
@@ -53,7 +53,14 @@ export const upsertWallet = async ({id, user: userId, ...rest}: {id?: string, us
         updated_at: new Date().toISOString(),
     })
 
-    if (error) throw error
+    if (error) console.error(error)
 
+    return { data, error }
+}
+
+export const updateWalletBalance = async (id: string, balance: number) => {
+    const supabase = createClient()
+    const { data, error } = await supabase.from('wallets').update({balance}).eq('id', id).select()
+    if (error) throw error
     return { data, error }
 }

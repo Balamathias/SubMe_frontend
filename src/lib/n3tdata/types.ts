@@ -5,3 +5,5 @@ export type Payload = {
     bypass: boolean;
     'request-id': string;
   };
+
+export type Networks = 'MTN' | 'GLO' | 'AIRTEL' | '9MOBILE'

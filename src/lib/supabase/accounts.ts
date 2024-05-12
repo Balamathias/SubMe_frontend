@@ -36,12 +36,17 @@ export const upsertUser = async ({id, ...rest}: Pick<Tables<'users'>, 'address' 
         ...rest,
     })
 
-    const { error: walletError } = await upsertWallet({
-        user: id,
-        balance: 0,
-    })
+    const { data: getWallet } = await supabase.from('wallets').select('*').eq('user', id).single()
+    if (!(getWallet?.user === id)) {
+        const { error: walletError } = await upsertWallet({
+            user: id,
+            balance: 0,
+        })
 
-    if (walletError) throw walletError
+        if (walletError) {
+            console.error(walletError)
+        }
+    }
 
     if (error) throw error
     return { data, error }

@@ -8,17 +8,19 @@ import { Button } from '../ui/button'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { networks } from '@/utils/networks'
 import Image from 'next/image'
-import { filterPlans } from '@/lib/n3tdata/data'
+import { convertNetworkNameToNetworkCode, filterPlans } from '@/lib/n3tdata/data'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { sendData } from '@/lib/n3tdata'
 import { nanoid } from 'nanoid'
-import { getWallet, upsertWallet } from '@/lib/supabase/wallets'
+import { getWallet, updateWalletBalance, upsertWallet } from '@/lib/supabase/wallets'
 import { formatNigerianNaira } from '@/utils/formatCurrency'
 import ConfirmPurchase from './ConfirmPurchase'
 import { upsertHistory } from '@/lib/supabase/history'
 import { useCurrentUser } from '@/providers/user-provider'
+import { Networks } from '@/lib/n3tdata/types'
+import { NewFactorListInstance } from 'twilio/lib/rest/verify/v2/service/entity/newFactor'
 
 const BuyData = ({network: _network}: {network?: string, user?: Tables<'users'>}) => {
     const user = useCurrentUser()?.currentAccountUser
@@ -46,10 +48,10 @@ const BuyData = ({network: _network}: {network?: string, user?: Tables<'users'>}
 
         try {
             setIsPending(true)
-            const {data} = await getWallet()
+            const {data: wallet} = await getWallet()
 
-            if (data) {
-                const balance = parseFloat(data.balance?.toString() || '0')
+            if (wallet) {
+                const balance = parseFloat(wallet.balance?.toString() || '0')
                 const parsedPrice = parseFloat(price)
                 if (balance < parsedPrice) {
                     toast.error("Insufficient Funds", {
@@ -67,40 +69,47 @@ const BuyData = ({network: _network}: {network?: string, user?: Tables<'users'>}
                     setNotFundable(true)
                     return
                 }
+                const computedBalance = balance - parsedPrice
 
-                const {} = await upsertWallet({
-                    id: data?.id,
-                    balance: parseFloat(data?.balance?.toString() || '0') - parseFloat(price),
+                const walletResponse = await updateWalletBalance(wallet?.id, computedBalance)
+
+                if (!walletResponse.data) {
+                    return toast.error('Error!', {description: 'We could not charge this amount on your wallet. Please try again '})
+                }
+
+                const res = await sendData({
+                    "request-id": 'Data_' + nanoid(10),
+                    bypass: false,
+                    data_plan: parseInt(_plan),
+                    network: convertNetworkNameToNetworkCode(upperNetworkName as Networks),
+                    phone: phone
                 })
-            }
-
-
-            const {data: _resp} = await sendData({
-                "request-id": nanoid(16).toString(),
-                bypass: false,
-                data_plan: parseInt(_plan),
-                network: upperNetworkName as any,
-                phone: phone
-            })
-
-            if (_resp) {
-                toast.success('Success', {description: `You bought ${_plan} data plan for ${phone} on ${upperNetworkName}`})
-                const {error} = await upsertHistory({
-                    description: `You bought ${_plan} data plan for ${phone} on ${upperNetworkName}`,
-                    title: 'Data Purchase',
-                    type: 'data',
-                    user: user?.id!,
-                    meta_data: JSON.stringify({}),
-                })
-
-                if (error) toast.error('Error!', {description: 'We could not save this transaction to your history. Please try again '})
-
+                if (res.OK) {
+                    toast.success('Success', {description: `You bought ${_plan} data plan for ${phone} on ${upperNetworkName}`})
+                    const historyRes = await upsertHistory({
+                        description: `You bought ${_plan} data plan for ${phone} on ${upperNetworkName}`,
+                        title: 'Data Purchase',
+                        type: 'data',
+                        user: user?.id!,
+                        meta_data: JSON.stringify({
+                            network: upperNetworkName,
+                            plan: _plan,
+                            phone,
+                            amount: price
+                        }),
+                    })
+                }
+                else {
+                    const walletResponse = await updateWalletBalance(wallet?.id, balance)
+                    if (!walletResponse.error) {
+                        toast.error('Error!', {description: 'We could not complete this transaction. Please try again '})
+                    }
+                }
                 // router.replace(`?success=true`)
             } else {
                 toast.info("Info", {description: 'An unknown error occured, please --try again.'})
             }
-
-             toast.success('Success')
+            //  toast.success('Success')
 
         } catch (err: any) {
             console.log(err)

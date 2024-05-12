@@ -1,3 +1,5 @@
+import { Networks } from "./types";
+
 type DataPlan = {
     id: number;
     provider: string;
@@ -57,5 +59,16 @@ export const filterPlans = (provider: 'MTN' | 'GLO' | '9MOBILE' | 'AIRTEL', cat?
     return dataPlans.filter(plan => (plan.provider === provider && plan.category === cat))
   }
   return dataPlans.filter(plan => plan.provider === provider)
+}
+
+export const convertNetworkNameToNetworkCode = (network: Networks) => {
+    const networkCodes = {
+        'MTN': 1,
+        'GLO': 2,
+        'AIRTEL': 4,
+        '9MOBILE': 3
+    }
+    return networkCodes[network]
+
 }
   
