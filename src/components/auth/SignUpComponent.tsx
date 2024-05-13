@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation'
 import { signUp } from '@/lib/supabase/user.actions'
 import Link from 'next/link'
 import { Card } from '../ui/card'
+import GoogleAuthButton from '../GoogleAuthButton'
 
 const SignInComponent = () => {
     const [isPending, setIsPending] = React.useState(false)
@@ -67,6 +68,8 @@ const SignInComponent = () => {
             <div className="flex flex-col space-y-2 text-xs">
               <p className='text-muted-foreground'>Already have an account? <Link href="/sign-in" className="underline text-brand">Sign In</Link></p>
             </div>
+
+            <GoogleAuthButton />
           </Card>
         </Form>
       )

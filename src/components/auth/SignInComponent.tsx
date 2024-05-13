@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation'
 import { signIn } from '@/lib/supabase/user.actions'
 import Link from 'next/link'
 import { Card } from '../ui/card'
+import GoogleAuthButton from '@/components/GoogleAuthButton'
 
 const SignInComponent = () => {
     const [isPending, setIsPending] = React.useState(false)
@@ -51,6 +52,8 @@ const SignInComponent = () => {
     return (
         <Form {...form}>
           <Card className='flex flex-col gap-2 shadow-none border-none w-full max-w-[450px]'>
+
+
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 flex flex-1 flex-col">
 
               <InputField name="email" label="Email" placeholder='youremail@example.com' control={form.control} />
@@ -62,6 +65,7 @@ const SignInComponent = () => {
               <p className='text-muted-foreground'>{"Don't"} have an account? <Link href="/sign-up" className="underline text-brand">Sign up</Link></p>
               <p className='text-muted-foreground'>Forgot password? <Link href="/auth/forgot-password" className="underline text-brand">Reset password</Link></p>
             </div>
+            <GoogleAuthButton />
           </Card>
         </Form>
       )
