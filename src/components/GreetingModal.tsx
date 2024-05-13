@@ -42,7 +42,7 @@ const GreetingModal = () => {
                         setIsOpen(false)
                         localStorage.setItem('hasGreetedBefore', JSON.stringify(true))
                     }} 
-                    className='bg-gradient-to-tr from-yellow-400 to-yellow-600 hover:bg-yellow-700 border-none outline-none mt-4 w-full rounded-full'
+                    className='bg-gradient-to-tr from-yellow-400 to-yellow-600 hover:bg-yellow-700 border-none outline-none mt-4 w-full rounded-full focus:border-none focus:outline-none focus:ring-0 focus:ring-offset-transparent focus:ring-offset-0'
                 >Close</Button>
             </div>
         </div>

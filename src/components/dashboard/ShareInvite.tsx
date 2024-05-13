@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 const ShareInvite = ({ user }: { user: Tables<'users'> }) => {
     const bonusAmt = 200
     const inviteCode = user?.unique_code
-    const inviteLink = `${process.env.NEXT_PUBLIC_URL!}/invite?code${inviteCode}`
+    const inviteLink = `${process.env.NEXT_PUBLIC_URL!}/invite?code=${inviteCode}`
     const [copied, setCopied] = useState(false)
 
     const copyToClipboard = (text: string) => {
