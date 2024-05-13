@@ -34,7 +34,7 @@ const DynamicModal = ({children, trigger, open, setOpen, dialogClassName, drawer
         <DialogTrigger asChild>
           {trigger}
         </DialogTrigger>
-        <DialogContent className={clsx("sm:max-w-[425px] rounded-xl border-none drop-shadow-md shadow-md", dialogClassName)}>
+        <DialogContent className={clsx("sm:max-w-[425px] rounded-xl border-none drop-shadow-md shadow-md focus:border-none outline-none focus-within:border-none", dialogClassName)}>
           <div className="flex flex-col gap-3 p-2.5">
             {children}
           </div>
@@ -48,7 +48,7 @@ const DynamicModal = ({children, trigger, open, setOpen, dialogClassName, drawer
       <DrawerTrigger asChild>
         { trigger }
       </DrawerTrigger>
-      <DrawerContent className={clsx('flex flex-col flex-1 gap-3 border-none focus:border-none p-4 max-sm:pb-8', drawerClassName)}>
+      <DrawerContent className={clsx('flex flex-col flex-1 gap-3 border-none focus:border-none p-4 max-sm:pb-8 outline-none', drawerClassName)}>
         <div className="flex flex-col gap-3">
             {children}
         </div>

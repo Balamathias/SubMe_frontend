@@ -10,7 +10,7 @@ import { getUser } from '@/lib/supabase/accounts'
 const TopNavbar = async () => {
   const { data: accountUser } = await getUser()
   return (
-    <div className='flex  top-0 z-20 h-14 justify-between items-center w-full p-3 md:px-5 backdrop-blur bg-transparent'>
+    <div className='flex  top-0 z-20 h-14 justify-between items-center w-full max-sm:!p-3 md:px-5 backdrop-blur bg-transparent'>
         <div className='hidden md:block'/>
         <Link href='/dashboard' className='flex gap-1 items-center md:hidden'>
             <Image
@@ -19,7 +19,7 @@ const TopNavbar = async () => {
             width={40}
             height={40}
             quality={100}
-            className="h-8 w-8 ml-4 object-contain"
+            className="h-8 w-8 md:ml-4 object-contain"
             />
             <p className="text-primary font-semibold md:hidden">SubMe</p>
         </Link>

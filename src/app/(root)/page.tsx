@@ -1,3 +1,4 @@
+import WhatsAppButton from "@/components/WhatsAppButton";
 import WidthWrapper from "@/components/WidthWrapper";
 import { buttonVariants } from "@/components/ui/button";
 import { LucideMail } from "lucide-react";
@@ -22,6 +23,7 @@ export default async function Home() {
           <Link href='/sign-up' className={buttonVariants({size: 'lg', variant: 'secondary'})}>Sign up</Link>
           <Link href='/dashboard' className={buttonVariants({size: 'lg', variant: 'outline'})}>Dashboard</Link>
         </div>
+        <WhatsAppButton />
       </div>
     </WidthWrapper>
   );

@@ -1,3 +1,4 @@
+import GreetingModal from "@/components/GreetingModal";
 import MobileBottombar from "@/components/dashboard/MobileBottombar";
 import TopNavbar from "@/components/dashboard/TopNavbar";
 import SidebarComponent from "@/components/sidebar";
@@ -13,6 +14,7 @@ export default async function DashboardLayout ({ children }: {children: React.Re
             <div className="flex flex-col w-full">
                 <TopNavbar />
                 { children }
+                <GreetingModal />
             </div>
             <MobileBottombar />
         </main>

@@ -1,3 +1,4 @@
+import WhatsAppButton from '@/components/WhatsAppButton'
 import WidthWrapper from '@/components/WidthWrapper'
 import Analytics, { AnalyticsSkeleton } from '@/components/dashboard/Analytics'
 import DashboardRightSidebar from '@/components/dashboard/DashboardRightSidebar'
@@ -20,7 +21,7 @@ const DashboardPage = async () => {
 
   return (
     <div className="flex items-start w-full">
-      <WidthWrapper className="py-2 lg:py-4 h-screen custom-scrollbar">
+      <WidthWrapper className="py-2 lg:py-4 h-screen custom-scrollbar sm:px-4 max-sm:!px-3">
         <div className="flex flex-col gap-3 overflow-auto custom-scrollbar pb-20">
           <div className="flex items-center gap-4 flex-wrap">
             <WelcomeBox user={accountUser!} />
@@ -36,6 +37,7 @@ const DashboardPage = async () => {
           </Suspense>
         </div>
       </WidthWrapper>
+      {/* <WhatsAppButton /> */}
       <DashboardRightSidebar user={accountUser!} />
     </div>
   )

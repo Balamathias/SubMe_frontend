@@ -11,7 +11,7 @@ const Topup = ({type}: {type: 'airtime' | 'data'}) => {
             {type === 'data' ? 'Buy Data' : 'Airtime Topup'}
         </h2>
 
-        <ScrollArea className="w-96 md:min-w-min whitespace-nowrap rounded-md !flex !flex-row gap-3">
+        <ScrollArea className="w-96 md:min-w-min whitespace-nowrap max-sm:max-w-max rounded-md !flex !flex-row gap-3">
             <div className="flex w-max space-x-4 p-4">
                 {
                     networks.map(network => (

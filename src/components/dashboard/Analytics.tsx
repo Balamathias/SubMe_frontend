@@ -8,12 +8,12 @@ const Analytics = async () => {
     const { data: wallet } = await getWallet()
   return (
     <div className="flex flex-wrap gap-4 items-center py-5">
-        <Card className='p-5 shadow-none border-none rounded-lg bg-gradient-to-b from-background to-secondary w-60 max-lg:w-full'>
+        <Card className='p-5 shadow-md drop-shadow-md border-none rounded-lg bg-gradient-to-b from-background to-secondary w-60 max-lg:w-full'>
             <h3 className='text-lg font-semibold mb-1.5'>Total Balance</h3>
             <h1 className="text-4xl py-1.5">{formatNigerianNaira(parseFloat(wallet?.balance?.toString()!) || 0)}</h1>
         </Card>
 
-        <Card className='p-5 shadow-none border-none rounded-lg bg-gradient-to-t from-background to-secondary w-60 max-lg:w-full'>
+        <Card className='p-5 shadow-md drop-shadow-md border-none rounded-lg bg-gradient-to-t from-background to-secondary w-60 max-lg:w-full'>
             <h3 className='text-lg font-semibold mb-1.5'>Today{"'"}s data Plan</h3>
             <h1 className="text-4xl py-1.5">0.00 GB</h1>
         </Card>
