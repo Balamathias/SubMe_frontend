@@ -1,13 +1,35 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import { Button } from './ui/button'
 import Image from 'next/image'
+import { signInWithOAuth } from '@/lib/supabase/user.actions'
+import { toast } from 'sonner'
+import { LoaderIcon } from 'lucide-react'
 
 const GoogleAuthButton = () => {
+  const [pending, setPending] = useState(false)
+  const handleSignIn = async () => {
+    try {
+      setPending(true)
+      await signInWithOAuth()
+    } catch (error) {
+      console.error(error)
+      toast.error('Sign In failed, please try again.')
+      setPending(false)
+    } finally {
+      setPending(false)
+    }
+  }
   return (
     <Button 
         className='flex items-center justify-center space-x-2 w-full my-4 py-4'
         variant={'outline'}
+        onClick={handleSignIn}
     >
+        {
+          pending && <LoaderIcon className='animate-spin' />
+        }
         <Image 
         src={'/glass/icons/google-flat.png'}
         alt='Google'

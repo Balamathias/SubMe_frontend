@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from "@/utils/supabase/server"
+import { Provider } from "@supabase/supabase-js"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
@@ -39,6 +40,23 @@ export const signOut = async () => {
     } else {
         return redirect('/sign-in')
     }
+}
+
+export const signInWithOAuth = async (provider?: Provider) => {
+    const supabase = createClient()
+    const {data, error} = await supabase.auth.signInWithOAuth({
+        provider: provider || 'google',
+        options: {
+            queryParams: {
+              access_type: 'offline',
+              prompt: 'consent',
+            },
+          },
+    })
+
+    if (error) throw error
+
+    return { data }
 }
 
 export const getCurrentUser = async () => {

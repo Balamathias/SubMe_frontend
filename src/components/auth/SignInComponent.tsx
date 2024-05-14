@@ -61,11 +61,11 @@ const SignInComponent = () => {
 
               <Button type="submit" disabled={isPending} className='mt-2 w-full'>{isPending ? 'Processing...' : 'Sign In'}</Button>
             </form>
+            <GoogleAuthButton />
             <div className="flex flex-col space-y-2 text-xs">
               <p className='text-muted-foreground'>{"Don't"} have an account? <Link href="/sign-up" className="underline text-brand">Sign up</Link></p>
               <p className='text-muted-foreground'>Forgot password? <Link href="/auth/forgot-password" className="underline text-brand">Reset password</Link></p>
             </div>
-            <GoogleAuthButton />
           </Card>
         </Form>
       )

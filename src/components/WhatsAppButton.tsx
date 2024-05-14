@@ -15,7 +15,6 @@ const WhatsAppButton = () => {
             avatar='/glass/images/user.png'
             chatMessage='How may we help you today?'
             darkMode={resolvedTheme === 'dark'}
-            allowClickAway
             allowEsc
             buttonClassName='bg-primary'
             buttonStyle={{backgroundColor: 'dodgerblue'}}
