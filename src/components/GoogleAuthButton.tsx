@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 import { Button } from './ui/button'
 import Image from 'next/image'
-import { signInWithOAuth } from '@/lib/supabase/user.actions'
 import { toast } from 'sonner'
 import { LoaderIcon } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
