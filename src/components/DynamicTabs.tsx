@@ -15,7 +15,7 @@ interface DynamicTabsProps {
 
 export function DynamicTabs({ tabs }: DynamicTabsProps) {
   return (
-    <Tabs defaultValue="account" className="w-[400px]">
+    <Tabs defaultValue="account" className="md:w-[400px]">
       <TabsList className="grid w-full max-sm:grid-cols-2 grid-cols-4">
         {
             tabs.map((tab) => (

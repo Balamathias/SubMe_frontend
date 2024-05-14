@@ -12,7 +12,7 @@ const TopNavbar = async () => {
   return (
     <div className='flex  top-0 z-20 h-14 justify-between items-center w-full max-sm:!p-3 md:px-5 backdrop-blur bg-transparent'>
         <div className='hidden md:block'/>
-        <Link href='/dashboard' className='flex gap-1 items-center md:hidden'>
+        <Link href='/' className='flex gap-1 items-center md:hidden'>
             <Image
             src='/vitals/logo-192.png'
             alt='Logo'

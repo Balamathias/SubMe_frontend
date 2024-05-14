@@ -49,7 +49,7 @@ const SignInComponent = () => {
         catch (error: any) {
             console.error(error)
             setIsPending(false)
-            return toast.error('Error!', { description: error?.message })
+            return toast.error('Error!', { description: 'Sign up failed, please verify your inputs.' })
         }
         finally { setIsPending(false) }
       }

@@ -9,7 +9,7 @@ const HomeNavbar = async () => {
     const { data: user } = await getUser()
   return (
     <nav className='w-full fixed top-0 left-0 h-20 flex items-center justify-between p-4 bg-background'>
-        <div className="flex items-center gap-2">
+        <Link href='/' className="flex items-center gap-2">
             <Image 
                 src={'/vitals/logo-192.png'}
                 alt='SubMe Logo'
@@ -19,7 +19,7 @@ const HomeNavbar = async () => {
                 className='object-cover h-8 w-8'
             />
             <span className="text-primary font-semibold">SubMe</span>
-        </div>
+        </Link>
 
         <div className="flex items-center gap-2.5">
             {

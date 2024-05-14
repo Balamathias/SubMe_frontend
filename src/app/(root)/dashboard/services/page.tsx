@@ -23,9 +23,7 @@ const ServicesPage = () => {
         <DynamicTabs 
             tabs={[
                 {label: 'Data', content: <div>Service 1</div>},
-                {label: 'Airtime', content: <div>Service 2</div>},
-                {label: 'Epins', content: <div>Service 3</div>},
-                {label: 'Electricity', content: <div>Service 4</div>},
+                {label: 'Airtime', content: <div>Service 2</div>}
             ]}
         />
     </WidthWrapper>
