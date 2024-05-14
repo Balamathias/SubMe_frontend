@@ -54,6 +54,8 @@ export const signInWithOAuth = async (provider?: Provider) => {
           },
     })
 
+    console.log(data, error)
+
     if (error) throw error
 
     return { data }
