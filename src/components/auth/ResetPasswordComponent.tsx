@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { updateAuthUser } from "@/lib/supabase/user.actions"
+import { password } from "@/lib/vtu"
 import { useRouter } from "next/navigation"
 import { ChangeEvent, useState } from "react"
 import { toast } from "sonner"
@@ -19,35 +21,21 @@ export default function ResetPasswordComponent({ email }: { email: string }) {
   const [isPending, setIsPending] = useState(false)
   const [fields, setFields] = useState({
     password: '',
-    email,
+    password2: '',
   })
 
   const router = useRouter()
 
   const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (fields.password !== fields.password2) return toast.error('Passwords do not match!')
     try {
       setIsPending(true)
-      const response = await fetch(process.env.NEXT_PUBLIC_URL + '/api/auth/reset-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(fields),
-      })
-      
-      if (response.ok) {
-        if (response?.status === 200) {
-          toast.success('Password reset successful', {description: 'You have successfully reset your password.'})
-          return router.replace('/auth/password-reset-success')
-        }
-        toast.error("An error occured.", {
-          description: "Sorry, we could not reset your password by this time.",
-        })
-      } else {
-        toast.error("An error occured.", {
-          description: "Sorry, we could not reset your password by this time.",
-        })
+
+      const { data } = await updateAuthUser(fields.password)
+      if (data) {
+        toast.success('Password reset successful', {description: 'You have successfully reset your password.'})
+        return router.replace('/auth/password-reset-success')
       }
 
     } catch (error) {
@@ -59,9 +47,6 @@ export default function ResetPasswordComponent({ email }: { email: string }) {
     } finally {
       setIsPending(false)
     }
-    if (isPending) {
-       toast.loading('Processing...', {description: 'Please wait while we reset your password.'})
-     } 
   }
 
   return (
@@ -75,14 +60,23 @@ export default function ResetPasswordComponent({ email }: { email: string }) {
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
-          <Label htmlFor="password">Password</Label>
-          <Input 
-              id="password" 
-              type="password" 
-              onChange={(e) => setFields({ ...fields, password: e.target.value }) }
-              required 
-          />
-        </div>
+            <Label htmlFor="password">Password</Label>
+            <Input 
+                id="password" 
+                type="password" 
+                onChange={(e) => setFields({ ...fields, password: e.target.value }) }
+                required 
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="password2">Confirm Password</Label>
+            <Input 
+                id="password2" 
+                type="password" 
+                onChange={(e) => setFields({ ...fields, password2: e.target.value }) }
+                required 
+            />
+          </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-2">
           <Button className="w-full" disabled={isPending}>{isPending ? 'Processing...' : 'Reset'}</Button>

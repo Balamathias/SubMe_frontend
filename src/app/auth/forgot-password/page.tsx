@@ -3,6 +3,7 @@
 import WidthWrapper from '@/components/WidthWrapper'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { resetPasswordForEmail } from '@/lib/supabase/user.actions'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -11,27 +12,17 @@ const ForgotPassword = () => {
     const [isPending, setIsPending] = useState(false)
     const handle = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        setIsPending(true)
-        const response = await fetch(process.env.NEXT_PUBLIC_URL + '/api/auth/forgot-password', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({email})
-        })
-        
-        isPending ? toast.loading('Processing...', {description: 'Please wait while we send your password reset mail.'}) : null
-        
-        if (response.ok) {
-            toast.success('Success', {description: 'Password reset mail sent successfully.', className: 'border-green-500 border-2 bg-green-200 dark:bg-green-800 '})
-            setIsPending(false)
+        try {
+            setIsPending(true)
+            await resetPasswordForEmail(email)
+            toast.success('Success', {description: 'Password reset email sent successfully, Please Check your email.', className: 'border-green-500 border-2 bg-green-200 dark:bg-green-800 '})
             return
-        }
-
-        setIsPending(false)
-
-        toast.error('An error occured.', {description: 'An error occured while trying to fetch your password reset mail.'})
-    }
+        } catch (error) {
+            console.error(error)
+            setIsPending(false)
+            toast.error('Error', {description: 'An error occured, please try again.'})
+        } finally {setIsPending(false)}
+   }
   return (
     <WidthWrapper className="min-h-screen items-center justify-center">
         <div className="flex flex-col">

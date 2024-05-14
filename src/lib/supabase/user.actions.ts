@@ -71,3 +71,22 @@ export const getCurrentUser = async () => {
     }
     return { data }
 }
+
+export const resetPasswordForEmail = async (email: string) => {
+    const supabase = createClient()
+    const { error, data } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${process.env.NEXT_SITE_URL}/auth/reset-password`
+    })
+
+    if (error) throw error
+    return
+}
+
+export const updateAuthUser = async (password: string) => {
+    const supabase = createClient()
+    const {data,error} = await supabase.auth.updateUser({
+        password
+    })
+    if (error) throw error
+    return { data }
+}
