@@ -5,7 +5,7 @@ import React, { ReactNode } from 'react'
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
   const { data: { user } } = await getCurrentUser()
-  if (user?.id) return redirect('/dashboard')
+  if (user) return redirect('/dashboard')
   return (
     <main className="flex justify-between">
         <div className="flex-1">
