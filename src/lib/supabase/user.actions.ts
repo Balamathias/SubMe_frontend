@@ -47,10 +47,6 @@ export const signInWithOAuth = async (provider?: Provider) => {
         provider: provider || 'google',
         options: {
             redirectTo: `${process.env.NEXT_PUBLIC_URL!}/auth/callback?next=/dashboard`,
-            // queryParams: {
-            //   access_type: 'offline',
-            //   prompt: 'consent',
-            // },
         },
     })
 
@@ -74,7 +70,7 @@ export const getCurrentUser = async () => {
 export const resetPasswordForEmail = async (email: string) => {
     const supabase = createClient()
     const { error, data } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${process.env.NEXT_SITE_URL}/auth/callback?next=/auth/reset-password`
+        redirectTo: `${process.env.NEXT_PUBLIC_URL}/auth/callback?next=/auth/reset-password`
     })
 
     if (error) throw error
