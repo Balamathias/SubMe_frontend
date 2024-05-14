@@ -30,7 +30,7 @@ export default async function Home({ searchParams }: { searchParams: {[key: stri
 
           <div className="flex gap-3 flex-row items-center max-sm:flex-col w-full">
             {
-              user ? (
+              !user ? (
                 <>
                   <Link 
                     className="p-4 text-center flex items-center justify-center rounded-xl text-clip bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-600 via-amber-600 to-fuchsia-900 mt-3 font-semibold hover:opacity-50 hover:transition-all w-full"
