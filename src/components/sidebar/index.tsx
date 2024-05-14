@@ -1,18 +1,14 @@
-'use client'
-
 import { sidebarLinks } from '@/utils/sidebarLinks'
 import React from 'react'
 import LinkItem from './LinkItem'
 import Image from 'next/image'
 import Avatar from '../Avatar'
-import { Button } from '../ui/button'
-import { ArrowRight } from 'lucide-react'
-import { useCurrentUser } from '@/providers/user-provider'
-import { signOut } from '@/lib/supabase/user.actions'
 import Link from 'next/link'
+import SignoutButton from '../SignoutButton'
+import { getUser } from '@/lib/supabase/accounts'
 
-const SidebarComponent = () => {
-    const user = useCurrentUser()
+const SidebarComponent = async () => {
+    const {data: user} = await getUser()
   return (
     <div className='h-screen md:flex flex-col p-2 lg:p-2.5 hidden w-[270px] lg:w-[300px] overflow-auto custom-scrollbar justify-between border-r-2 border-dashed'>
         <div className="flex flex-col space-y-12">
@@ -39,15 +35,13 @@ const SidebarComponent = () => {
         <footer className="p-2 lg:p-2.5 flex gap-3 flex-col">
             <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-1.5 max-lg:flex-col max-md:justify-center">
-                    <Avatar name={user?.currentAccountUser?.first_name || ''} />
+                    <Avatar name={user?.first_name || ''} />
                     <div className="flex flex-col gap-0.5 max-lg:items-center max-lg:justify-center">
-                        <h3 className='text-primary text-sm py-0 font-semibold truncate'>{user?.currentAccountUser?.username || ''}</h3>
-                        <p className='text-muted-foreground text-xs truncate'>{user?.currentAccountUser?.email}</p>
+                        <h3 className='text-primary text-sm py-0 font-semibold truncate'>{user?.username || ''}</h3>
+                        <p className='text-muted-foreground text-xs truncate'>{user?.email}</p>
                     </div>
                 </div>
-                <Button onClick={ async () => await signOut()} size='sm' variant='destructive' className='flex items-center gap-1.5 border-none shadow-none'>
-                    Logout <ArrowRight size={16} className='text-rose-50'/>
-                </Button>
+                <SignoutButton />
             </div>
         </footer>
     </div>
