@@ -9,7 +9,7 @@ const ErrorPage = () => {
     <WidthWrapper>
       <div className="h-screen overflow-hidden w-full flex items-center justify-center flex-col">
         <Image src="/glass/images/clip.png" width={150} height={150} className='object-cover' alt="Error" />
-        <p className="text-lg text-muted-foreground">Seems like the link you followed hs expired, Please try again...</p>
+        <p className="text-lg text-muted-foreground text-center my-2">Seems like the link you followed has expired, Please try again...</p>
         <Link className={buttonVariants()} href={'/sign-in'}>Return to Sign In</Link>
       </div>
     </WidthWrapper>
