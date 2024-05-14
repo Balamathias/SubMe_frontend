@@ -3,8 +3,10 @@ import WidthWrapper from "@/components/WidthWrapper";
 import { buttonVariants } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
 import { LucideMail } from "lucide-react";
+import { revalidatePath } from "next/cache";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 
 export default async function Home({ searchParams }: { searchParams: {[key: string]: string}}) {
@@ -15,6 +17,7 @@ export default async function Home({ searchParams }: { searchParams: {[key: stri
   if (code) {
     const {data, error} = await supabase.auth.exchangeCodeForSession(code)
     if (data?.user && !error) {
+      revalidatePath('/', 'layout')
       return redirect('dashboard')
     }
   }
@@ -37,7 +40,9 @@ export default async function Home({ searchParams }: { searchParams: {[key: stri
           <Link href='/sign-up' className={buttonVariants({size: 'lg', variant: 'secondary'})}>Sign up</Link>
           <Link href='/dashboard' className={buttonVariants({size: 'lg', variant: 'outline'})}>Dashboard</Link>
         </div>
-        <WhatsAppButton />
+        <Suspense fallback={<p>Loading...</p>}>
+          <WhatsAppButton />
+        </Suspense>
       </div>
     </WidthWrapper>
   );

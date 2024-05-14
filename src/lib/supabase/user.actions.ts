@@ -4,8 +4,6 @@ import { createClient } from "@/utils/supabase/server"
 import { Provider } from "@supabase/supabase-js"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { NextResponse } from "next/server"
-
 
 export const signUp = async ({ email, password }: { email: string, password: string }) => {
     const supabase = createClient()
