@@ -4,6 +4,7 @@ import React from 'react'
 import { Button, buttonVariants } from '../ui/button'
 import Link from 'next/link'
 import clsx from 'clsx'
+import SignoutButton from '../SignoutButton'
 
 const HomeNavbar = async () => {
     const { data: user } = await getUser()
@@ -25,7 +26,7 @@ const HomeNavbar = async () => {
             {
                 user ? (<>
 
-                    <Button variant={'destructive'} size={'sm'}>Sign out</Button>
+                    <SignoutButton />
                 
                 </>) : (
                     <>
