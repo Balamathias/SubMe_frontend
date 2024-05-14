@@ -6,7 +6,7 @@ import React from 'react'
 const Welcome = async () => {
     const { data: user } = await getUser()
   return (
-    <section className="flex gap-3 w-full max-md:flex-col-reverse p-4 lg:p-8 justify-between  max-w-7xl mx-auto items-stretch mt-20 pb-60">
+    <section className="flex gap-3 w-full max-md:flex-col-reverse p-4 lg:p-8 justify-between  max-w-7xl mx-auto items-stretch mt-20 pb-16 md:pb-60">
         <div className="flex-1 flex flex-col space-y-6 h-full">
           <h2 className="text-5xl font-semibold py-3 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-400 via-amber-700 to-amber-500 text-transparent text-clip bg-clip-text">
             Welcome to SubMe,

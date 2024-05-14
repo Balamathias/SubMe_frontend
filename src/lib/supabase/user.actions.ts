@@ -50,7 +50,8 @@ export const signInWithOAuth = async (provider?: Provider) => {
               access_type: 'offline',
               prompt: 'consent',
             },
-          },
+            redirectTo: `${process.env.NEXT_SITE_URL}/auth/callback?next=/dashboard`,
+        },
     })
 
     console.log(data, error)
@@ -73,7 +74,7 @@ export const getCurrentUser = async () => {
 export const resetPasswordForEmail = async (email: string) => {
     const supabase = createClient()
     const { error, data } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${process.env.NEXT_SITE_URL}/auth/reset-password`
+        redirectTo: `${process.env.NEXT_SITE_URL}/auth/callback?next=/auth/reset-password`
     })
 
     if (error) throw error
