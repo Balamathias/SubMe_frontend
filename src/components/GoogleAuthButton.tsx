@@ -5,15 +5,17 @@ import { Button } from './ui/button'
 import Image from 'next/image'
 import { toast } from 'sonner'
 import { LoaderIcon } from 'lucide-react'
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/utils/supabase/server'
+import { signInWithOAuth } from '@/lib/supabase/user.actions'
 
 const GoogleAuthButton = () => {
   const [pending, setPending] = useState(false)
-  const supabase = createClient()
+  // const supabase = createClient()
   const handleSignIn = async () => {
     try {
       setPending(true)
-      await supabase.auth.signInWithOAuth({provider: 'google'})
+      // await supabase.auth.signInWithOAuth({provider: 'google'})
+      await signInWithOAuth('google')
     } catch (error) {
       console.error(error)
       toast.error('Sign In failed, please try again.')
