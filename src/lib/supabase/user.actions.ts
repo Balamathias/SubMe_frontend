@@ -59,7 +59,7 @@ export const signInWithOAuth = async (provider?: Provider) => {
 
     if (error) throw error
 
-    return NextResponse.redirect(data.url)
+    return redirect(data.url)
 }
 
 export const getCurrentUser = async () => {
