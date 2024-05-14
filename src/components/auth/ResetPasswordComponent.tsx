@@ -66,6 +66,7 @@ export default function ResetPasswordComponent({ email }: { email: string }) {
                 type="password" 
                 onChange={(e) => setFields({ ...fields, password: e.target.value }) }
                 required 
+                placeholder="Password..."
             />
           </div>
           <div className="grid gap-2">
@@ -75,6 +76,7 @@ export default function ResetPasswordComponent({ email }: { email: string }) {
                 type="password" 
                 onChange={(e) => setFields({ ...fields, password2: e.target.value }) }
                 required 
+                placeholder="Confirm password"
             />
           </div>
         </CardContent>
