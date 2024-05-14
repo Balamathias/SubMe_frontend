@@ -1,11 +1,25 @@
 import WhatsAppButton from "@/components/WhatsAppButton";
 import WidthWrapper from "@/components/WidthWrapper";
 import { buttonVariants } from "@/components/ui/button";
+import { createClient } from "@/utils/supabase/server";
 import { LucideMail } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: {[key: string]: string}}) {
+  const urlParams = new URLSearchParams(searchParams)
+  const code = urlParams.get('code')
+  const supabase = createClient()
+
+  if (code) {
+    const {data, error} = await supabase.auth.exchangeCodeForSession(code)
+    if (data?.user && !error) {
+      return redirect('dashboard')
+    }
+  }
+
+
   return (
     <WidthWrapper className="min-h-screen justify-center items-center bg-[url('/bg/bubbles.png')] bg-cover mx-0 max-w-full" >
       <div className="flex flex-col gap-3 p-6 lg:px-10 lg:py-10 rounded-lg bg-background backdrop:backdrop-blur ">
