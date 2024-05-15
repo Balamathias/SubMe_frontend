@@ -64,7 +64,7 @@ const OnboardingComponent = ({ currentUser }: {currentUser?: User | null}) => {
                 pin: (await hashPin(values.pin)),
             })
             toast.success('Success!', { description: 'Account updated successfully, You will be redirected in a bit...' })
-            router.push('/dashboard')
+            router.replace('/dashboard')
             return
         }
         catch (error: any) {

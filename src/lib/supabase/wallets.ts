@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server"
 import { getCurrentUser } from "./user.actions";
+import { getUser } from "./accounts";
 
 // const supabase = createClient()
 
@@ -62,5 +63,52 @@ export const updateWalletBalance = async (id: string, balance: number) => {
     const supabase = createClient()
     const { data, error } = await supabase.from('wallets').update({balance}).eq('id', id).select()
     if (error) throw error
+    return { data, error }
+}
+
+export const handleInvitation = async (invitationId: string, bonus=100) => {
+    const supabase = createClient()
+    const { data: user } = await getUser()
+    const { data, error } = await supabase.from('users').select().eq('unique_code', invitationId).single()
+    if (error) throw error
+    const { data: _walletBalance } = await supabase.from('wallets').select().eq('user', data.id).single()
+    if (data) {
+        const { error: _walletError } = await supabase.from('wallets').update({balance: parseFloat(_walletBalance?.balance?.toString() || '0') + bonus}).eq('user', data.id)
+        if (_walletError) throw _walletError
+        const { error: _historyError, status } = await supabase.from('history').insert({
+            type: 'bonus', 
+            user: data.id, 
+            title: 'Invitation bonus',
+            description: `You received a bonus of N${bonus} for inviting ${user?.email}`,
+            meta_data: JSON.stringify({
+            amount: bonus,
+            invitee_id: user?.id,
+        })}).eq('user', data.id)
+
+        if (_historyError) throw _historyError
+
+        if (error) throw error
+        return { data, error, status }
+    }
+
+    const experimental_str = `const response = await getWallet()
+    if (response.error) throw response.error
+    const { data: _wallet, error: _walletError } = await supabase.from('wallets').upsert({
+        user: user?.id,
+        balance: parseFloat(response?.data?.balance?.toString() || '0') + bonus
+        })
+    if (_walletError) throw _walletError
+    const { data: _history, error: _historyError, status } = await supabase.from('history').insert({
+        type: 'welcome_bonus', 
+        user: user?.id, 
+        title: 'Invitation bonus',
+        description: \`You received a welcome bonus of N${bonus} for signing up at SubMe\`,
+        meta_data: JSON.stringify({
+            amount: bonus,
+            invitee_id: user?.id,
+        })
+    })
+    if (_historyError) throw _historyError`
+
     return { data, error }
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { Button } from '../ui/button'
-import { MenuIcon } from 'lucide-react'
+import { BarChart, Kanban, MenuIcon } from 'lucide-react'
 import Image from 'next/image'
 import DynamicSheet from '../DynamicSheet'
 import RightSidebar from './RightSidebar'
@@ -27,8 +27,8 @@ const TopNavbar = async () => {
         <div className="flex flex-col items-center justify-end ml-auto">
             <DynamicSheet
               trigger={
-                <Button size={'icon'} variant={'ghost'}>
-                  <MenuIcon size={26} strokeWidth={1} className='text-muted-foreground mr-2' />
+                <Button size={'icon'} variant={'secondary'} className="mt-2">
+                  <Kanban size={26} strokeWidth={1.5} className='text-muted-foreground mr-2 rotate-90' />
                 </Button>
               }
             >

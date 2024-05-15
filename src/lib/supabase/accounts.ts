@@ -4,7 +4,7 @@ import { Tables } from "@/database.types";
 import { createClient } from "@/utils/supabase/server";
 import { nanoid } from "nanoid";
 import { getCurrentUser } from "./user.actions";
-import { upsertWallet } from "./wallets";
+import { handleInvitation, upsertWallet } from "./wallets";
 
 // const supabase = createClient()
 
@@ -34,7 +34,7 @@ export const upsertUser = async ({id, ...rest}: Pick<Tables<'users'>, 'address' 
         onboarded: true,
         unique_code: nanoid(10),
         ...rest,
-    })
+    }).select().single()
 
     const { data: getWallet } = await supabase.from('wallets').select('*').eq('user', id).single()
     if (!(getWallet?.user === id)) {
@@ -45,6 +45,13 @@ export const upsertUser = async ({id, ...rest}: Pick<Tables<'users'>, 'address' 
 
         if (walletError) {
             console.error(walletError)
+        }
+    }
+
+    if (data?.invited_by) {
+        const { data: invite } = await handleInvitation(data.invited_by)
+        if (!invite) {
+            console.error('Invitation not found')
         }
     }
 
