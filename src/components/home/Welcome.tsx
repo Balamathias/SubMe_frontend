@@ -24,16 +24,16 @@ const Welcome = async () => {
               !user ? (
                 <>
                   <Link 
-                    className="p-4 sm:p-2 px-4 text-center flex items-center justify-center rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600 font-semibold hover:opacity-50 hover:transition-all w-full"
+                    className="text-white p-4 sm:p-2 px-4 text-center flex items-center justify-center rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600 font-semibold hover:opacity-50 hover:transition-all w-full"
                     href={'/sign-up'}><LucideMail className='mr-1' color='white' size={20} /> Get Started with Email</Link>
                   <Link 
-                    className="p-4 sm:p-2 px-4 text-center flex items-center justify-center rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600 font-semibold hover:opacity-50 hover:transition-all w-full"
+                    className="text-white p-4 sm:p-2 px-4 text-center flex items-center justify-center rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600 font-semibold hover:opacity-50 hover:transition-all w-full max-w-[500px]"
                     href={'/sign-in'}>Continue with Google</Link>
                 </>
               ): (
 
                 <Link 
-                className="p-4 sm:p-2 px-4 text-center flex items-center justify-center rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600 font-semibold hover:opacity-50 hover:transition-all w-full"
+                className="text-whitep-4 sm:p-2 px-4 text-center flex items-center justify-center rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600 font-semibold hover:opacity-50 hover:transition-all w-full"
                 href={'/dashboard'}>Go to Dashboard</Link>
               )
             }

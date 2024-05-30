@@ -17,6 +17,7 @@ import { signIn } from '@/lib/supabase/user.actions'
 import Link from 'next/link'
 import { Card } from '../ui/card'
 import GoogleAuthButton from '@/components/GoogleAuthButton'
+import { LucideLock, LucideMail } from 'lucide-react'
 
 const SignInComponent = () => {
     const [isPending, setIsPending] = React.useState(false)
@@ -56,10 +57,19 @@ const SignInComponent = () => {
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 flex flex-1 flex-col">
 
-              <InputField name="email" label="Email" placeholder='youremail@example.com' control={form.control} />
-              <InputField name="password" label="Password" control={form.control} placeholder='password...' />
+              <div>
+                <InputField 
+                  name="email" 
+                  label="Email" 
+                  placeholder='youremail@example.com' 
+                  control={form.control} 
+                  Icon={LucideMail}
+                />
+              </div>
 
-              <Button type="submit" disabled={isPending} className='mt-2 w-full'>{isPending ? 'Processing...' : 'Sign In'}</Button>
+              <InputField name="password" label="Password" control={form.control} placeholder='password...' Icon={LucideLock} />
+
+              <Button type="submit" disabled={isPending} className='mt-2 w-full bg-gradient-to-l from-pink-500 to-purple-600 to-violet-700 h-12 rounded-full flex justify-center items-center'>{isPending ? 'Processing...' : 'Sign In'}</Button>
             </form>
             <GoogleAuthButton />
             <div className="flex flex-col space-y-2 text-xs">

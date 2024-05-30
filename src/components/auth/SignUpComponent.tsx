@@ -17,6 +17,7 @@ import { signUp } from '@/lib/supabase/user.actions'
 import Link from 'next/link'
 import { Card } from '../ui/card'
 import GoogleAuthButton from '../GoogleAuthButton'
+import { LucideLock, LucideMail } from 'lucide-react'
 
 const SignInComponent = () => {
     const [isPending, setIsPending] = React.useState(false)
@@ -59,11 +60,11 @@ const SignInComponent = () => {
           <Card className='flex flex-col gap-2 shadow-none border-none w-full max-w-[450px]'>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
-              <InputField name="email" label="Email" placeholder='youremail@example.com' control={form.control} />
-              <InputField name="password" label="Password" control={form.control} placeholder='password...' />
-              <InputField name="confirm_password" label="Confirm Password" control={form.control} placeholder='Confrim password...' />
+              <InputField name="email" label="Email" placeholder='youremail@example.com' control={form.control} Icon={LucideMail}/>
+              <InputField name="password" label="Password" control={form.control} placeholder='password...' Icon={LucideLock} />
+              <InputField name="confirm_password" label="Confirm Password" control={form.control} placeholder='Confrim password...' Icon={LucideLock} />
 
-              <Button type="submit" disabled={isPending} className='mt-2 w-full'>{isPending ? 'Processing...' : 'Sign up'}</Button>
+              <Button type="submit" disabled={isPending} className='mt-2 w-full bg-gradient-to-l from-pink-500 to-purple-600 to-violet-700 h-12 rounded-full flex justify-center items-center'>{isPending ? 'Processing...' : 'Sign up'}</Button>
             </form>
             <GoogleAuthButton />
             

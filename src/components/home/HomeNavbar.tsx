@@ -27,12 +27,12 @@ const HomeNavbar = async () => {
                 {
                     user ? (<>
 
-                        <SignoutButton  className='p-6 px-8 rounded-full bg-gradient bg-gradient-to-l rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600' />
+                        <SignoutButton  className='p-6 text-white px-8 rounded-full bg-gradient bg-gradient-to-l rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600' />
                     
                     </>) : (
                         <>
-                            <Link href={'/sign-in'} className={clsx(buttonVariants({}), 'p-6 px-8 !rounded-full bg-gradient bg-gradient-to-l rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600')}>Sign in</Link>
-                            <Link href={'/sign-up'} className={clsx(buttonVariants({variant: 'secondary'}), 'max-sm:hidden p-6 px-8 !rounded-full bg-gradient bg-gradient-to-l rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600')}>Sign up</Link>
+                            <Link href={'/sign-in'} className={clsx(buttonVariants({}), 'text-white p-6 px-8 !rounded-full bg-gradient bg-gradient-to-l rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600')}>Sign in</Link>
+                            <Link href={'/sign-up'} className={clsx(buttonVariants({variant: 'secondary'}), 'text-white max-sm:hidden p-6 px-8 !rounded-full bg-gradient bg-gradient-to-l rounded-full bg-gradient bg-gradient-to-l from-violet-500 via-purple-600 to-amber-600')}>Sign up</Link>
                         </>
                     )
                 }

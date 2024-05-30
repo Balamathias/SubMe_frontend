@@ -7,18 +7,18 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
   const { data: { user } } = await getCurrentUser()
   if (user) return redirect('/dashboard')
   return (
-    <main className="flex justify-between">
+    <main className="flex justify-between flex-col-reverse md:flex-row gap-4">
         <div className="flex-1">
           {children}
         </div>
-        <div className="flex-1 hidden md:flex">
+        <div className="flex-1 md:flex">
           <Image
-            src='/images/welcome-4.png'
+            src='/auth/auth.svg'
             alt={'Sign In | Up'}
             quality={100}
             width={500}
             height={500}
-            className='w-full h-full object-cover'
+            className='w-full h-96 md:h-full object-contain'
           />
         </div>
     </main>

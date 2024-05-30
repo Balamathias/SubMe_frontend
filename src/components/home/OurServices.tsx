@@ -30,7 +30,7 @@ const services = [
 
 const OurServices = () => {
   return (
-    <section className='w-full h-full flex items-center bg-slate-800/[0.2] py-8'>
+    <section className='w-full h-full flex items-center light:bg-slate-800/[0.2] bg-slate-800 py-8'>
         <div className="flex gap-3 w-full max-md:flex-col p-4 lg:p-8 justify-between mx-auto bg-cover max-w-7xl rounded-2xl flex-col space-y-4">
             <div className="flex-1 flex items-center justify-center space-x-2 w-full">
                 <LucideGlobe2 size={28} className='text-violet-500' />
@@ -39,12 +39,12 @@ const OurServices = () => {
             <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 columns-3 gap-4 flex-wrap py-8">
                 {
                     services.map(service => (
-                        <Card key={service.title} className='drop-shadow-md shadow-md p-4 border-none flex flex-col space-y-1 rounded-2xl hover:opacity-80 hover:transition-all hover:animate-in hover:duration-150 cursor-pointer bg-slate-950/[0.8] justify-between w-full min-w-[280px] flex-1'>
+                        <Card key={service.title} className='drop-shadow-md text-white shadow-md p-4 border-none flex flex-col space-y-1 rounded-2xl hover:opacity-80 hover:transition-all hover:animate-in hover:duration-150 cursor-pointer bg-slate-950/[0.8] justify-between w-full min-w-[280px] flex-1'>
                             <h2 className="text-xl my-1 font-semibold">{service.title}</h2>
-                            <p className="text-md my-1.5 text-muted-foreground">{service.desc}</p>
+                            <p className="text-md my-1.5">{service.desc}</p>
 
                             <div className='flex flex-col items-center justify-center my-2'>
-                                <Button variant='default' className='w-full rounded-full'>Learn more</Button>
+                                <Button variant='default' className='w-full rounded-full text-white'>Learn more</Button>
                             </div>
                         </Card>
                     ))

@@ -26,8 +26,8 @@ const GoogleAuthButton = () => {
   }
   return (
     <Button 
-        className='flex items-center justify-center space-x-2 w-full my-4 py-4'
-        variant={'outline'}
+        className='flex items-center border-none shadow-none justify-center space-x-2 w-full my-4 py-4 h-10 md:h-12 rounded-full'
+        variant={'secondary'}
         onClick={handleSignIn}
     >
         {
