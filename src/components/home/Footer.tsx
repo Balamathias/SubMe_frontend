@@ -11,7 +11,7 @@ const Footer = () => {
                     <li className='text-muted-foreground my-1'>Chisom Nwachukwu</li>
                 </ul>
             </div>   
-            <p className='text-muted-foreground'>&copy; All rights reserved, SubMe {new Date().getFullYear()}.</p>  
+            <p className='text-muted-foreground flex-1'>&copy; All rights reserved, SubMe {new Date().getFullYear()}.</p>  
         </div>
     </footer>
   )
