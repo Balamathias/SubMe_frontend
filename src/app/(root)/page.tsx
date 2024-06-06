@@ -1,5 +1,6 @@
 import WhatsAppButton from "@/components/WhatsAppButton";
 import WidthWrapper from "@/components/WidthWrapper";
+import About from "@/components/home/About";
 import Footer from "@/components/home/Footer";
 import HomeNavbar from "@/components/home/HomeNavbar";
 import OurServices from "@/components/home/OurServices";
@@ -21,6 +22,7 @@ export default async function Home({ searchParams }: { searchParams: {[key: stri
       <HomeNavbar />
       <Welcome />
       <OurServices />
+      <About />
       <Footer />
     </main>
   );
