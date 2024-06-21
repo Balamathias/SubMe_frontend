@@ -18,9 +18,10 @@ const sendEmail = async (message: Message & EmailTemplateProps) => {
     })
 
     if (res.ok) {
-        return res.json();
+        return await res.json() as {message: string};
     } else {
         console.log(res.statusText)
+        return {message: 'Error sending email'}
     }
   };
   

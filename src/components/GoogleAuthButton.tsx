@@ -34,12 +34,12 @@ const GoogleAuthButton = () => {
           pending && <LoaderIcon className='animate-spin' />
         }
         <Image 
-        src={'/glass/icons/google-flat.png'}
-        alt='Google'
-        width={20}
-        height={20}
-        quality={100}
-        className='object-cover'
+          src={'/glass/icons/google-flat.png'}
+          alt='Google'
+          width={20}
+          height={20}
+          quality={100}
+          className='object-cover'
         />
         <span className="text-muted-foreground">Continue with Google</span>
     </Button>
