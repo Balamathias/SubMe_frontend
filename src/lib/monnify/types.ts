@@ -85,3 +85,32 @@ export interface InitiateTransferProps {
   redirectUrl: string;
   paymentMethods: ('CARD' | 'ACCOUNT_TRANSFER')[];
 }
+
+export interface InitiateSingleTransfer {
+  amount: number;
+  reference: string;
+  narration: string;
+  destinationBankCode: string;
+  destinationAccountNumber: string;
+  currency: string;
+  sourceAccountNumber: string;
+  destinationAccountName: string;
+}
+
+export interface InitiateSingleTransferResponse {
+  requestSuccessful: boolean;
+  responseMessage: string;
+  responseCode: string;
+  responseBody:  {
+    amount: number;
+    reference: string;
+    status: string;
+    dateCreated: string;
+    totalFee: number;
+    sessionId: string;
+    destinationAccountName: string;
+    destinationBankName: string;
+    destinationAccountNumber: string;
+    destinationBankCode: string;
+  }
+}

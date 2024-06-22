@@ -1,4 +1,4 @@
-import { InitiateTransferApiResponse, InitiateTransferProps, MonnifyUserTokenResponse, ReservedAccountApiResponse, ReservedAccountProps } from "./types";
+import { InitiateSingleTransfer, InitiateSingleTransferResponse, InitiateTransferApiResponse, InitiateTransferProps, MonnifyUserTokenResponse, ReservedAccountApiResponse, ReservedAccountProps } from "./types";
 
 export const baseURL = process.env.NEXT_MONNIFY_BASE_URL;
 export const monnifyAPIKey = process.env.NEXT_MONNIFY_API_KEY;
@@ -74,6 +74,33 @@ export const initiateTransfer = async (payload: InitiateTransferProps): Promise<
         })
 
         console.log(res.statusText, res.status)
+
+        if (!res.ok) {
+            console.error('Error fetching data')
+            throw Error
+        }
+        const data = await res.json()
+        return data
+    } catch (error: any) {
+        console.error(error)
+    }
+}
+
+export const initiateSingleTransfer = async (payload: InitiateSingleTransfer): Promise<InitiateSingleTransferResponse | undefined> => {
+    const token = (await getUserMonnifyToken())?.data?.responseBody?.accessToken
+    const headers: HeadersInit = new Headers({
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+    });
+
+    try {
+        const res = await fetch(baseURL+'/disbursements/single', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(payload)
+        })
+
+        console.log(res)
 
         if (!res.ok) {
             console.error('Error fetching data')
