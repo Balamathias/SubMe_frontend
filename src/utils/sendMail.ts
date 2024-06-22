@@ -1,6 +1,8 @@
-'use server'
+// 'use server'
 
 import type { EmailTemplateProps } from "@/email/Email";
+
+export const runtime = "edge"
 
 interface Message {
     email: string;

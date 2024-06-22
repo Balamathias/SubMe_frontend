@@ -12,5 +12,5 @@ export const POST = async (req: Request, res: Response) => {
         html: `<pre>${JSON.stringify(data ?? [])}</pre>`
     })
 
-    return NextResponse.json({message: 'Transaction completed'}, {status: 200, statusText: 'OK'})
+    return NextResponse.json({message: 'Transaction completed', data: JSON.stringify(data, null, 2)}, {status: 200, statusText: 'OK'})
 }
